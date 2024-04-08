@@ -13,45 +13,22 @@ import {
   ReactEditor,
 } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { Button, Icon, Toolbar } from '../components/components'
+import { MButton, MIcon, Toolbar } from '../components/components'
+import { Text, Flex , Box} from '@chakra-ui/react'
 
 
-const initialValue= [
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: 'In addition to nodes that contain editable text, you can also create other types of nodes, like images or videos.',
-      },
-    ],
-  },
-  {
-    type: 'image',
-    url: 'https://source.unsplash.com/kFrdX5IeQzI',
-    children: [{ text: '' }],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: 'This example shows images in action. It features two ways to add images. You can either add an image via the toolbar icon above, or if you want in on a little secret, copy an image URL to your clipboard and paste it anywhere in the editor!',
-      },
-    ],
-  },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: 'You can delete images with the cross in the top left. Try deleting this sheep:',
-      },
-    ],
-  },
-  {
-    type: 'image',
-    url: 'https://source.unsplash.com/zOwZKwZOZq8',
-    children: [{ text: '' }],
-  },
-]
+
+const initialValue = [
+    {
+      type: 'paragraph',
+      children: [
+        {
+          text: '',
+        },
+      ],
+   
+ },]
+
 
 
 const EditorWithImages = () => {
@@ -63,8 +40,15 @@ const EditorWithImages = () => {
   return (
     <Slate editor={editor} initialValue={initialValue}>
       <Toolbar>
+        <Flex justifyContent={'space-between'} marginBottom={'1.25rem'}>  
         <InsertImageButton />
+      <InsertImageButton />
+        <InsertImageButton />
+
+        </Flex>
+      
       </Toolbar>
+      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'510px'} height= '440px' >
       <Editable
         onKeyDown={event => {
           if (isHotkey('mod+a', event)) {
@@ -72,9 +56,10 @@ const EditorWithImages = () => {
             Transforms.select(editor, [])
           }
         }}
-        renderElement={props => <Element {...props} />}
+        renderElement={props =><Element {...props} />}
         placeholder="Enter some text..."
       />
+      </Box>
     </Slate>
   )
 }
@@ -142,33 +127,36 @@ const Image = ({ attributes, children, element }) => {
   const selected = useSelected()
   const focused = useFocused()
   return (
-    <div {...attributes}>
+    <Box {...attributes} padding={'1rem'}>
       {children}
-      <div
+      <Flex
         contentEditable={false}
-        // style={{ position: 'relative' }}
+        justifyContent={'center'}
       >
         <img
           src={element.url}
-         
-          // style={{ display: 'block', maxWidth: '100%', maxHeight: '20em', boxShadow:  (selected && focused ) ? '0 0 0 3px #B4D5FF' : 'none' }}
-        />
-        <Button
+          height={'250px'}
+          width={'640px'}
+         />
+        <MButton
+          variant = 'ghost'
+          height = '40px'
+          minWidth= '20px'
+          marginLeft='-2.8rem'
           active
           onClick={() => Transforms.removeNodes(editor, { at: path })}
-          // style={{  display: selected && focused ? 'inline' : 'none',  position: 'absolute', top:'0.5em', left: '0.5em',         backgroundColor: 'white'}}
         >
-          <Icon>delete</Icon>
-        </Button>
-      </div>
-    </div>
+          <MIcon eltype='delete' >delete</MIcon>
+        </MButton>
+      </Flex>
+    </Box>
   )
 }
 
 const InsertImageButton = () => {
   const editor = useSlateStatic()
   return (
-    <Button
+    <MButton
       onMouseDown={event => {
         event.preventDefault()
         const url = window.prompt('Enter the URL of the image:')
@@ -179,8 +167,9 @@ const InsertImageButton = () => {
         url && insertImage(editor, url)
       }}
     >
-      <Icon>image</Icon>
-    </Button>
+      <MIcon eltype= 'image'>image</MIcon>
+      <Text fontSize={'14px'}>Add Image</Text>
+    </MButton>
   )
 }
 

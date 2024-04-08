@@ -10,7 +10,7 @@ import { Flex, Box } from '@chakra-ui/react'
 const App = () => {
 
   return (
-    <Box paddingX='2.5rem'  width={'768px'} margin={'16px auto'} border='2px solid red'>
+    <Box padding='2.5rem'  width={'768px'} margin={'0 auto'} border='2px solid red' height={'100vh'}>
        {/* <SlateEditor/> */}
         {/* < EditorWithImages /> */}
         {/* < CollaborativeEditor/> */}

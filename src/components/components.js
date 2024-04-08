@@ -1,10 +1,12 @@
-import React, { ReactNode, Ref, PropsWithChildren } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
-// import { cx, css } from '@emotion/css'
+import { Icon } from '@chakra-ui/react'
+import { FaImages } from "react-icons/fa6";
+import { Button } from '@chakra-ui/react'
+import { TiDeleteOutline } from "react-icons/ti";
 
 
-
-export const Button = React.forwardRef(
+export const MButton = React.forwardRef(
   (
     {
       className,
@@ -13,25 +15,20 @@ export const Button = React.forwardRef(
       ...props
     },
     ref
-  ) => (
-    <span
+  ) => {    
+    return(
+    <Button
       {...props}
       ref={ref}
-    //   className={cx(
-    //     className,
-    //     css`
-    //       cursor: pointer;
-    //       color: ${reversed
-    //         ? active
-    //           ? 'white'
-    //           : '#aaa'
-    //         : active
-    //         ? 'black'
-    //         : '#ccc'};
-    //     `
-    //   )}
+      padding={'1rem'}
+      height={props.height || '60px'}
+      minWidth={ props.minWidth || '182px'}
+      borderRadius={'32px'}
+      colorScheme='black' 
+      variant= {  props.variant || 'outline'   }
+      marginLeft={ 0|| props.marginLeft}
     />
-  )
+  )}
 )
 
 export const EditorValue = React.forwardRef(
@@ -51,35 +48,11 @@ export const EditorValue = React.forwardRef(
       <div
         ref={ref}
         {...props}
-        // className={cx(
-        //   className,
-        //   css`
-        //     margin: 30px -20px 0;
-        //   `
-        // )}
       >
-        <div
-        //   className={css`
-        //     font-size: 14px;
-        //     padding: 5px 20px;
-        //     color: #404040;
-        //     border-top: 2px solid #eeeeee;
-        //     background: #f8f8f8;
-        //   `}
-        >
+        <div>
           Slate's value as text
         </div>
-        <div
-        //   className={css`
-        //     color: #404040;
-        //     font: 12px monospace;
-        //     white-space: pre-wrap;
-        //     padding: 10px 20px;
-        //     div {
-        //       margin: 0 0 0.5em;
-        //     }
-        //   `}
-        >
+        <div>
           {textLines}
         </div>
       </div>
@@ -87,18 +60,16 @@ export const EditorValue = React.forwardRef(
   }
 )
 
-export const Icon = React.forwardRef(
+export const MIcon = React.forwardRef(
   (
     { className, ...props },
     ref
-  ) => (
-    <span
-      {...props}
-      ref={ref}
-  
-    // style={{ fontSize: '18px', verticalAlign : 'text-bottom' }}
-    />
-  )
+  ) =>
+  {
+    return (
+        <Icon  as={ props.eltype == 'delete' ? TiDeleteOutline  : FaImages } boxSize={10}   {...props} color='black.200' 
+        ref={ref} marginRight={'0.5rem'}/>
+  )}
 )
 
 export const Instruction = React.forwardRef(
@@ -109,8 +80,6 @@ export const Instruction = React.forwardRef(
     <div
       {...props}
       ref={ref}
-    
-    // style={{whiteSpace: 'pre-wrap', margin: '0 -20px 10px', padding: '10px 20px', fontSize: '14px', background: '#f8f8e8' }}
     />
   )
 )
@@ -124,7 +93,6 @@ export const Menu = React.forwardRef(
       {...props}
       data-test-id="menu"
       ref={ref}    
-    // style={{ display: 'inline-block',  marginLeft: '15px' }}
     />
   )
 )
@@ -143,7 +111,6 @@ export const Toolbar = React.forwardRef(
     <Menu
       {...props}
       ref={ref}
-    // style={{   position: 'relative', padding: '1px 18px 17px', margin: '0 -20px', borderBottom: '2px solid #eee', marginBottom:'20px' }}
     />
   )
 )
