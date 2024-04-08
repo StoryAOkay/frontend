@@ -48,7 +48,7 @@ const EditorWithImages = () => {
         </Flex>
       
       </Toolbar>
-      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'510px'} height= '440px' >
+      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height= '320px' >
       <Editable
         onKeyDown={event => {
           if (isHotkey('mod+a', event)) {
@@ -135,8 +135,8 @@ const Image = ({ attributes, children, element }) => {
       >
         <img
           src={element.url}
-          height={'250px'}
-          width={'640px'}
+          height={'180px'}
+          width={'500px'}
          />
         <MButton
           variant = 'ghost'
