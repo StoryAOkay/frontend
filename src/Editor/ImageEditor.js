@@ -14,10 +14,12 @@ import {
 } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { MButton, MIcon, Toolbar } from '../components/components'
-import { Text, Flex, Box, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import { Text, Flex, Box, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, FocusLock,  useDisclosure } from '@chakra-ui/react'
 import CustomEditor from '../Helpers/CustomEditor'
 
-import { FaBold , FaItalic, FaUnderline} from "react-icons/fa6";
+import { FaBold, FaItalic, FaUnderline } from "react-icons/fa6";
+import { Form } from '../components/popover_form'
+
 
 const initialValue = [
   {
@@ -49,13 +51,12 @@ const EditorWithImages = () => {
           <InsertImageButton />
           <StyleTextButton />
           <InsertImageButton />
-
         </Flex>
 
       </Toolbar>
       <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' >
         <Editable
-         editor={editor}
+          editor={editor}
           onKeyDown={event => {
             if (isHotkey('mod+a', event)) {
               event.preventDefault()
@@ -174,12 +175,19 @@ const Image = ({ attributes, children, element }) => {
 }
 
 const InsertImageButton = () => {
+  const { onOpen, onClose, isOpen } = useDisclosure()
+  let firstFieldRef = React.useRef(null)
   const editor = useSlateStatic()
   return (
     <MButton
       onMouseDown={event => {
         event.preventDefault()
-        const url = window.prompt('Enter the URL of the image:')
+        console.log(firstFieldRef)
+        let url = '';
+        onOpen();
+        if (firstFieldRef && firstFieldRef.current) {
+          url = firstFieldRef.current.value;
+        }
         if (url && !isImageUrl(url)) {
           alert('URL is not an image')
           return
@@ -187,8 +195,33 @@ const InsertImageButton = () => {
         url && insertImage(editor, url)
       }}
     >
-      <MIcon eltype='image'>image</MIcon>
-      <Text fontSize={'14px'}>Add Image</Text>
+      <Popover
+        isOpen={isOpen}
+        initialFocusRef={firstFieldRef}
+        onOpen={onOpen}
+        onClose={()=>{
+          onClose();
+          firstFieldRef.current.value =''}}
+        placement='bottom-start'
+        closeOnBlur={false}
+      >
+
+        <PopoverTrigger>
+          <>
+            <MIcon eltype='image'>image</MIcon>
+            <Text fontSize={'14px'}>Add Image</Text>
+          </>
+        </PopoverTrigger>
+        <PopoverContent p={5}>
+          <FocusLock returnFocus persistentFocus={false}>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <Form firstFieldRef={firstFieldRef} onCancel={onClose} text = 'image' />
+          </FocusLock>
+        </PopoverContent>
+
+      </Popover>
+
     </MButton>
   )
 }
@@ -200,30 +233,36 @@ const CustomMenuButton = ({ children, ...props }) => {
 const StyleTextButton = () => {
   const editor = useSlateStatic()
   return (
-  
+
     <MMenu>
       <CustomMenuButton
         aria-label='Options'
-   
-      >    
-      <MButton>
-      <MIcon eltype='style' boxSize={8} marginRight='1rem'>edit</MIcon>
-        <Text fontSize={'14px'}>Style text</Text>
-      </MButton>
-      
+
+      >
+        <MButton>
+          <MIcon eltype='style' boxSize={8} marginRight='1rem'>edit</MIcon>
+          <Text fontSize={'14px'}>Style text</Text>
+        </MButton>
+
       </CustomMenuButton>
       <MenuList>
-        <MenuItem onClick={(event) =>  {event.preventDefault()
-        CustomEditor.toggleBoldMark(editor)}} icon={<FaBold />} command='⌘b' 
-    >
+        <MenuItem onClick={(event) => {
+          event.preventDefault()
+          CustomEditor.toggleBoldMark(editor)
+        }} icon={<FaBold />} command='⌘b'
+        >
           Bold
         </MenuItem>
-        <MenuItem icon={<FaItalic />} command='⌘i' onClick={(event) =>  {event.preventDefault()
-        CustomEditor.toggleItalicMark(editor)}}>
+        <MenuItem icon={<FaItalic />} command='⌘i' onClick={(event) => {
+          event.preventDefault()
+          CustomEditor.toggleItalicMark(editor)
+        }}>
           Italic
         </MenuItem>
-        <MenuItem icon={<FaUnderline />} command='⌘u' onClick={(event) =>  {event.preventDefault()
-        CustomEditor.toggleUnderlineMark(editor)}}>
+        <MenuItem icon={<FaUnderline />} command='⌘u' onClick={(event) => {
+          event.preventDefault()
+          CustomEditor.toggleUnderlineMark(editor)
+        }}>
           Underline
         </MenuItem>
 
@@ -255,7 +294,7 @@ const Leaf = props => {
   return (
     <span
       {...props.attributes}
-      style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal' , fontStyle: props.leaf.italic ? 'italic': 'normal', textDecoration : props.leaf.underline ? 'underline': 'none'}}
+      style={{ fontWeight: props.leaf.bold ? 'bold' : 'normal', fontStyle: props.leaf.italic ? 'italic' : 'normal', textDecoration: props.leaf.underline ? 'underline' : 'none' }}
     >
       {props.children}
     </span>
