@@ -13,6 +13,14 @@ const CustomEditor = {
   
       return !!match
     },
+    isUndelineMarkActive(editor) {
+      const marks = Editor.marks(editor)
+      return marks ? marks.underline === true : false
+    },
+    isItalicMarkActive(editor) {
+      const marks = Editor.marks(editor)
+      return marks ? marks.italic === true : false
+    },
   
     toggleBoldMark(editor) {
       const isActive = CustomEditor.isBoldMarkActive(editor)
@@ -22,6 +30,26 @@ const CustomEditor = {
         Editor.addMark(editor, 'bold', true)
       }
     },
+  
+    toggleItalicMark(editor) {
+      const isActive = CustomEditor.isItalicMarkActive(editor)
+
+      if (isActive) {
+        Editor.removeMark(editor, 'italic')
+      } else {
+        Editor.addMark(editor, 'italic', true)
+      }
+    },
+  
+    toggleUnderlineMark(editor) {
+      const isActive = CustomEditor.isUndelineMarkActive(editor)
+      if (isActive) {
+        Editor.removeMark(editor, 'underline')
+      } else {
+        Editor.addMark(editor, 'underline', true)
+      }
+    },
+  
   
     toggleCodeBlock(editor) {
       const isActive = CustomEditor.isCodeBlockActive(editor)
