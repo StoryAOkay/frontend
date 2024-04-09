@@ -24,7 +24,7 @@ export const TextInput = React.forwardRef((props, ref) => {
             Cancel
           </Button>
           <Button onClick={onCancel} colorScheme='teal'>
-            Generate  URL
+            Generate
           </Button>
         </ButtonGroup>
       </Stack>
