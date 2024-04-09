@@ -5,7 +5,7 @@ function StoryPageFooter(){
         <Box marginY={'2.5rem'}>
             <Flex justifyContent={ 'space-around'}>
             <Button fontSize={'1rem'} color={'black'} variant={'outline'} width>Previous Page</Button>
-            <Button fontSize={'1rem'} colorScheme='blue'>Next page</Button>
+            <Button fontSize={'1rem'} colorScheme='blue'>Next Page</Button>
             </Flex>
             <Flex justifyContent={ 'space-around'}>
             <Button fontSize={'1rem'} color={'black'} variant={'outline'}>End Story</Button>
