@@ -5,7 +5,7 @@ function StoryPageFooter(){
         <Box marginY={'2.5rem'}>
             <Flex justifyContent={ 'space-around'}>
             <Button fontSize={'1rem'} color={'black'} variant={'outline'} width>Previous Page</Button>
-            <Button fontSize={'1rem'} colorScheme='blue'>Next Page</Button>
+            <BlackButton fontSize={'1rem'} >Next Page</BlackButton>
             </Flex>
             <Flex justifyContent={ 'space-around'}>
             <Button fontSize={'1rem'} color={'black'} variant={'outline'}>End Story</Button>
@@ -15,3 +15,13 @@ function StoryPageFooter(){
     )
 }
 export default StoryPageFooter;
+const BlackButton = ({ children, ...props }) => (
+    <Button
+      {...props}
+      bg="black"
+      color="white"
+      _hover={{ bg: "gray.700" }} // Optional hover effect
+    >
+      {children}
+    </Button>
+  );

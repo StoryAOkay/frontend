@@ -40,8 +40,13 @@
 li {
   color: #fff;
   list-style-type: none;
+  font-weight: 600;
 }
 
  li span .active{
   color: #776871;
+}
+
+li :hover {
+  color: #a799b7; /* Hover color */
 }

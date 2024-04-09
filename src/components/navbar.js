@@ -14,23 +14,23 @@ export default function Navbar() {
           </li>
           <li className="nav-item">
             <span className="nav-link">
-              <NavLink to="/create"> CREATE STORY</NavLink>
+              <NavLink end to="/write"> CREATE STORY</NavLink>
             </span>
           </li>
           <li className="nav-item">
             <span className="nav-link">
-              <NavLink to="/mystories">MY STORIES </NavLink>
+              <NavLink end to="/mystories">MY STORIES </NavLink>
             </span>
           </li>
           <li className="nav-item">
             <span className="nav-link">
-              <NavLink to="/editors">EDITOR'S PICK </NavLink>
+              <NavLink end to="/editors">EDITOR'S PICK </NavLink>
             </span>
           </li>
 
           <li className="nav-item">
             <span className="nav-link">
-            <NavLink to="/">LOGOUT </NavLink>
+            <NavLink end to="/">LOGOUT </NavLink>
             </span>
           </li>
         </Flex>

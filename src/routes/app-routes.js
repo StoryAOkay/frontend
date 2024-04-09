@@ -9,7 +9,7 @@ export default function AppRouter() {
   return (
     <Routes>
         <Route path="/" end element={<HomePage />} />
-      <Route path="/create" end element={<StoryPage />} />
+      <Route path="/write" end element={<StoryPage />} />
       <Route path="/editors" end element={<EditorPickPage />} />
       <Route path="/mystories" end element={<MyStoriesPage />} />
       
