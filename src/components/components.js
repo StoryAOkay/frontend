@@ -5,6 +5,8 @@ import { FaImages } from "react-icons/fa6";
 import { Button } from '@chakra-ui/react'
 import { TiDeleteOutline } from "react-icons/ti";
 import { RxFontStyle } from "react-icons/rx";
+import { FaRegEdit } from "react-icons/fa";
+
 export const MButton = React.forwardRef(
   (
     {
@@ -66,7 +68,7 @@ export const MIcon = React.forwardRef(
   ) =>
   {
     return (
-        <Icon  as={ props.eltype === 'delete' ? TiDeleteOutline :  props.eltype === 'style' ? RxFontStyle  : FaImages } boxSize={props.boxSize|| 10}   {...props} color='black.200' 
+        <Icon  as={ props.eltype === 'delete' ? TiDeleteOutline :  props.eltype === 'style' ? RxFontStyle : props.eltype ==='edit'? FaRegEdit : FaImages } boxSize={props.boxSize|| 10}   {...props} color='black.200' 
         ref={ref} marginRight={props.marginRight || '0.5rem'}/>
   )}
 )
