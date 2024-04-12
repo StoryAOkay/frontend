@@ -10,7 +10,7 @@ function HomePage(){
     if (!auth){
         return(<></>)
     }
-    const name = auth.user.name
+    const name = (auth.user && auth.user.name) ? auth.user.name : ''
  
     return(
         <Box>

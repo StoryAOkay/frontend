@@ -14,12 +14,12 @@ import {
 } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { MButton, MIcon, Toolbar } from '../components/components'
-import { Text, Flex, Box, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, FocusLock,  useDisclosure } from '@chakra-ui/react'
+import { Text, Flex, Box,  Popover, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, FocusLock,  useDisclosure } from '@chakra-ui/react'
 import CustomEditor from '../Helpers/CustomEditor'
 
-import { FaBold, FaItalic, FaUnderline } from "react-icons/fa6";
 import { Form } from '../components/popover_form'
-
+import StyleTextButton from '../components/style_text_button'
+import WriteWithAIButton from '../components/write_with_ai_btn'
 
 const initialValue = [
   {
@@ -48,7 +48,7 @@ const EditorWithImages = () => {
     <Slate editor={editor} initialValue={initialValue}>
       <Toolbar>
         <Flex justifyContent={'space-between'} marginBottom={'1.25rem'}>
-          <InsertTextButton />
+           <WriteWithAIButton/>
           <StyleTextButton />
           <InsertImageButton />
         </Flex>
@@ -175,77 +175,6 @@ const Image = ({ attributes, children, element }) => {
 }
 
 
-const insertText = (editor, txt) => {
-  const text = { text: txt };
-
-  if (editor.selection){
-    const [currentNode] = Editor.node(editor, editor.selection);
-    if (currentNode && currentNode.type === 'paragraph') {
-      
-      Transforms.insertNodes(
-        editor,
-        text,
-        { mode: 'lowest', at: editor.selection.anchor }
-      );
-      return
-    }
-  }
-
-    const textn = { type: 'paragraph', children: [text] };
-    Transforms.insertNodes(editor, textn);
-    Transforms.insertNodes(editor, {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    });
-
-};
-
-const InsertTextButton = () => {
-  const { onOpen, onClose, isOpen } = useDisclosure()
-  let firstFieldRef = React.useRef(null)
-  const editor = useSlateStatic()
-  return (
-    <MButton
-      onMouseDown={event => {
-        event.preventDefault()
-        let txt = '';
-        onOpen();
-        if (firstFieldRef && firstFieldRef.current) {
-          txt = firstFieldRef.current.value;
-        }
-        txt && insertText(editor, txt)
-      }}
-    >
-      <Popover
-        isOpen={isOpen}
-        initialFocusRef={firstFieldRef}
-        onOpen={onOpen}
-        onClose={()=>{
-          onClose();
-          firstFieldRef.current.value =''}}
-        placement='bottom-start'
-        closeOnBlur={false}
-      >
-
-        <PopoverTrigger>
-          <>
-            <MIcon eltype='edit'>Write with ai</MIcon>
-            <Text fontSize={'14px'}>Write with ai</Text>
-          </>
-        </PopoverTrigger>
-        <PopoverContent p={5}>
-          <FocusLock returnFocus persistentFocus={false}>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <Form firstFieldRef={firstFieldRef} onCancel={onClose} text = 'a' />
-          </FocusLock>
-        </PopoverContent>
-
-      </Popover>
-
-    </MButton>
-  )
-}
 const InsertImageButton = () => {
   const { onOpen, onClose, isOpen } = useDisclosure()
   let firstFieldRef = React.useRef(null)
@@ -296,65 +225,7 @@ const InsertImageButton = () => {
     </MButton>
   )
 }
-const CustomMenuButton = ({ children, ...props }) => {
-  return (<MenuButton as='div'  {...props}>
-    {children}
-  </MenuButton>)
-}
-const StyleTextButton = () => {
-  const editor = useSlateStatic()
-  return (
 
-    <MMenu>
-      <CustomMenuButton
-        aria-label='Options'
-
-      >
-        <MButton>
-          <MIcon eltype='style' boxSize={8} marginRight='1rem'>edit</MIcon>
-          <Text fontSize={'14px'}>Style text</Text>
-        </MButton>
-
-      </CustomMenuButton>
-      <MenuList>
-        <MenuItem onClick={(event) => {
-          event.preventDefault()
-          CustomEditor.toggleBoldMark(editor)
-        }} icon={<FaBold />} command='⌘b'
-        >
-          Bold
-        </MenuItem>
-        <MenuItem icon={<FaItalic />} command='⌘i' onClick={(event) => {
-          event.preventDefault()
-          CustomEditor.toggleItalicMark(editor)
-        }}>
-          Italic
-        </MenuItem>
-        <MenuItem icon={<FaUnderline />} command='⌘u' onClick={(event) => {
-          event.preventDefault()
-          CustomEditor.toggleUnderlineMark(editor)
-        }}>
-          Underline
-        </MenuItem>
-
-      </MenuList>
-    </MMenu>
-
-  )
-}
-export const MMenu = React.forwardRef(
-  (
-    { className, ...props },
-    ref
-  ) => (
-
-    <Menu  {...props}
-      data-test-id="menu"
-      ref={ref}>
-
-    </Menu>
-  )
-)
 const isImageUrl = url => {
   if (!url) return false
   if (!isUrl(url)) return false
