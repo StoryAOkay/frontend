@@ -1,5 +1,7 @@
 import React from "react";
 import { Text, Flex , Button, Box} from '@chakra-ui/react'
+import BlackButton from "./black_button";
+
 function StoryPageFooter(){
     return(
         <Box marginY={'2.5rem'}>
@@ -15,13 +17,3 @@ function StoryPageFooter(){
     )
 }
 export default StoryPageFooter;
-const BlackButton = ({ children, ...props }) => (
-    <Button
-      {...props}
-      bg="black"
-      color="white"
-      _hover={{ bg: "gray.700" }} // Optional hover effect
-    >
-      {children}
-    </Button>
-  );

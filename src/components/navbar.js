@@ -2,8 +2,25 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {Flex} from '@chakra-ui/react'
-export default function Navbar() {
+import { useAuth } from "../contexts/AuthContext";
 
+export default function Navbar() {
+  const [isLoading, setIsLoading] = React.useState(false);
+  let auth = useAuth();
+  const logout = () => {
+    if (auth && auth.user && sessionStorage.hasOwnProperty("token")) {
+      setIsLoading(true);
+      sessionStorage.clear();
+      auth.setCurrentUser(null);
+      window.location.reload();
+      setIsLoading(false);
+    }
+  };
+  if ( !auth || !auth.user ){
+    return(
+      <span></span>
+    )
+  }
   
   return (
         <Flex justifyContent='space-around' className="nav justify-content-end" width='100%'>
@@ -29,8 +46,8 @@ export default function Navbar() {
           </li>
 
           <li className="nav-item">
-            <span className="nav-link">
-            <NavLink end to="/">LOGOUT </NavLink>
+            <span className="nav-link" onClick={logout}>
+            <NavLink end to="/login">LOGOUT </NavLink>
             </span>
           </li>
         </Flex>

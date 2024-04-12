@@ -4,14 +4,19 @@ import HomePage from "../pages/HomePage";
 import EditorPickPage from "../pages/EditorPage";
 import MyStoriesPage from "../pages/MyStoriesPage";
 import StoryPage from "../pages/StoryPage";
+import LoginPage from "../pages/LoginPage";
+import SignupPage from "../pages/SignupPage";
+import { RequireAuth } from "../contexts/AuthContext";
 
 export default function AppRouter() {
   return (
     <Routes>
-        <Route path="/" end element={<HomePage />} />
-      <Route path="/write" end element={<StoryPage />} />
-      <Route path="/editors" end element={<EditorPickPage />} />
-      <Route path="/mystories" end element={<MyStoriesPage />} />
+      <Route path="/" end element={<RequireAuth><HomePage /></RequireAuth>} />
+      <Route path="/write" end element={<RequireAuth><StoryPage /></RequireAuth>} />
+      <Route path="/editors" end element={<RequireAuth><EditorPickPage /></RequireAuth>} />
+      <Route path="/mystories" end element={<RequireAuth><MyStoriesPage /></RequireAuth>} />
+      <Route path="/login" end element={<LoginPage />} />
+      <Route path="/signup" end element={<SignupPage />} />
       
     </Routes>
   );
