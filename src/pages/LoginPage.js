@@ -77,9 +77,10 @@ function LoginPage() {
                         paddingLeft={"2rem"}
                         maxWidth='240px'
                         ref={emailRef}
+                        mb='1rem'
                     />
                     <Text>Password</Text>
-                    <InputGroup size="md" maxWidth='240px'  >
+                    <InputGroup size="md" maxWidth='240px' mb='1rem' >
                         <Input
                             pr="4.5rem"
                             type={passwordVisible ? "text" : "password"}
@@ -104,7 +105,7 @@ function LoginPage() {
                         </InputRightElement>
                     </InputGroup>
                     <BlackButton
-                        marginBottom="8px"
+                        marginBottom="16px"
                         borderRadius="20px"
                         height="60px"
                         width="240px"
