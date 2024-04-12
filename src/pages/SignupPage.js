@@ -131,8 +131,6 @@ function SignupPage(){
               borderRadius="20px"
               height="60px"
               width="240px"
-              color="#fff"
-              background={"#3182CE"}
               fontWeight={700}
               fontSize="24px"
               marginTop={"2rem"}

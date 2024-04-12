@@ -59,12 +59,12 @@ function LoginPage() {
         <Box>
 
             <Flex
-                py="4.5rem"
+                py="5rem"
                 flexDirection={"column"}
                 alignItems="center"
             >
                 <Box width={'240px'} textAlign={'left'}>
-                    <Heading as='h2' fontSize='54px' pb='1.5rem' fontFamily={'Mountains of Christmas'}>StoryAOkay</Heading>                
+                    <Heading as='h2' fontSize='54px' pb='3rem' fontFamily={'Mountains of Christmas'}>StoryAOkay</Heading>                
                     
                     <Text >Email</Text>
                     <Input
@@ -108,8 +108,6 @@ function LoginPage() {
                         borderRadius="20px"
                         height="60px"
                         width="240px"
-                        color="#fff"
-                        background={"#3182CE"}
                         fontWeight={700}
                         fontSize="24px"
                         marginTop={"2rem"}
