@@ -4,7 +4,7 @@ import axios from "../axios";
 
 let AuthContext = React.createContext(null);
 
-const base_url = "http://localhost:5000/api";
+const base_url = process.env.REACT_APP_BASE_URL;
 
 export function AuthProvider({ children }) {
   let [user, setUser] = React.useState(null);

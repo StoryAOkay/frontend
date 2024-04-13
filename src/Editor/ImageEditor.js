@@ -20,6 +20,7 @@ import CustomEditor from '../Helpers/CustomEditor'
 import { Form } from '../components/popover_form'
 import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
+import axios from "../axios";
 
 const initialValue = [
   {
@@ -156,8 +157,8 @@ const Image = ({ attributes, children, element }) => {
       >
         <img
           src={element.url}
-          height={'180px'}
-          width={'500px'}
+          height={'100px'}
+          width={'280px'}
         />
         <MButton
           variant='ghost'
@@ -174,54 +175,48 @@ const Image = ({ attributes, children, element }) => {
   )
 }
 
+const generateAIImage = async(mprompt)=>{
+  let mres = ''
+  const base_url = process.env.REACT_APP_BASE_URL
+  const prompt = mprompt + ' with aspect ratio 2: 1'
+  await axios()
+  .post(`${base_url}/pages/generateImage`, {
+      prompt: prompt,
+    })
+      .then((res) => {
+      if (res.data && res.data.imageUrl){
+          mres = res.data.imageUrl
+      }        
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+      return mres
+}
 
 const InsertImageButton = () => {
-  const { onOpen, onClose, isOpen } = useDisclosure()
-  let firstFieldRef = React.useRef(null)
   const editor = useSlateStatic()
   return (
     <MButton
-      onMouseDown={event => {
+      onMouseDown={async (event) => {
         event.preventDefault()
-        let url = '';
-        onOpen();
-        if (firstFieldRef && firstFieldRef.current) {
-          url = firstFieldRef.current.value;
+        const selectedText = Editor.string(editor, editor.selection);
+        if (!selectedText){
+          return
         }
+        const url = await generateAIImage(selectedText);
+      
         if (url && !isImageUrl(url)) {
           alert('URL is not an image')
           return
         }
         url && insertImage(editor, url)
       }}
-    >
-      <Popover
-        isOpen={isOpen}
-        initialFocusRef={firstFieldRef}
-        onOpen={onOpen}
-        onClose={()=>{
-          onClose();
-          firstFieldRef.current.value =''}}
-        placement='bottom-start'
-        closeOnBlur={false}
-      >
-
-        <PopoverTrigger>
+    >      
           <>
             <MIcon eltype='image'>image</MIcon>
             <Text fontSize={'14px'}>Add Image</Text>
           </>
-        </PopoverTrigger>
-        <PopoverContent p={5}>
-          <FocusLock returnFocus persistentFocus={false}>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <Form firstFieldRef={firstFieldRef} onCancel={onClose} text = 'image' />
-          </FocusLock>
-        </PopoverContent>
-
-      </Popover>
-
     </MButton>
   )
 }

@@ -20,7 +20,7 @@ import BlackButton from "../components/black_button";
 function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const base_url = 'http://localhost:5000/api'
+    const base_url = process.env.REACT_APP_BASE_URL;
     const { getUserProfile } = useAuth();
 
     const emailRef = useRef();
