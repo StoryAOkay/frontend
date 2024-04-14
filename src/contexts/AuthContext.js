@@ -22,31 +22,30 @@ export function AuthProvider({ children }) {
       id: `${userDTO.id}`,
     });
   };
-  const value = React.useMemo(() => {
-    const getUserProfile = async () => {
+  const getUserProfile = React.useCallback(async()=>{
 
-      await axios()
-        .get(`${base_url}/users/`)
-        .then((res) => {
-          setCurrentUser({
-            ...res.data,
-            name: res.data.name,
-            email: res.data.email,
-            id: res.data.id,
-            age: res.data.age,
-          });
-        })
-        .catch((error) => {
-          alert(error.response.data.message);
+    await axios()
+      .get(`${base_url}/users/`)
+      .then((res) => {
+        setCurrentUser({
+          ...res.data,
+          name: res.data.name,
+          email: res.data.email,
+          id: res.data.id,
+          age: res.data.age,
         });
-    };
-
-    return {
-      user,
-      getUserProfile,
-      setCurrentUser,
-    };
-  }, [user]);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
+  }, [])
+  
+  const value = React.useMemo(() => ({
+    user,
+    getUserProfile,
+    setCurrentUser
+  }), [user, getUserProfile, setCurrentUser]);
+  
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 export function useAuth() {
@@ -55,7 +54,7 @@ export function useAuth() {
 export function RequireAuth({ children }) {
   let auth = useAuth();
   let location = useLocation();
-  if (sessionStorage.getItem("token")) {
+  if (sessionStorage.getItem("token") && !auth.user)  {
     auth.getUserProfile();
   }
   if (auth.user || sessionStorage.getItem("token")) {
