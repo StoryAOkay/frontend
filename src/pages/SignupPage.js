@@ -20,7 +20,7 @@ function SignupPage(){
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { getUserProfile } = useAuth();
-    const base_url = "http://localhost:5000/api";
+    const base_url = process.env.REACT_APP_BASE_URL;
     const nameRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
