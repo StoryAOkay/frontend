@@ -9,11 +9,8 @@ export default function BookThumbnail({ books, canWrite }) {
     const navigate = useNavigate()
     const editBook = (event,book)=>{
         event.preventDefault()
-        console.log(bookInfo, pages)
-        debugger
         const page_num = pages.length + 1
         setCurBookInfo(book)
-        console.log(bookInfo, pages, 2)
         navigate(`/write/page/${page_num}`, {pageNumber: page_num})
         
     }
@@ -22,8 +19,6 @@ export default function BookThumbnail({ books, canWrite }) {
 
             {books.map(
                 (book) => {
-                    console.log(book)
-                    // debugger
                     return (
 
 
