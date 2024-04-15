@@ -10,7 +10,7 @@ function MyStoriesPage(){
     },[])
     return(
         
-        <Box border='2px solid red'>
+        <Box >
             
             <BookThumbnail books={myBooks} canWrite={true} />
         </Box>

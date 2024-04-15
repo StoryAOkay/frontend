@@ -24,9 +24,9 @@ export default function BookThumbnail({ books, canWrite }) {
 
                         <Popover key={book._id} maxW='180px' >
                             <PopoverTrigger>
-                                <Box>
+                                <Box border='1px solid black' borderRadius='30px' padding='1.25rem'>
                                     <Image src={book.image} height='165px' borderRadius={'40px'} />
-                                    <Text paddingLeft={'16px'}>{book.title}</Text>
+                                    <Text>{book.title}</Text>
                                 </Box>
                             </PopoverTrigger>
                             <PopoverContent padding={'1rem'}>

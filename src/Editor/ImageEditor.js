@@ -223,6 +223,9 @@ const InsertImageButton = () => {
 
 export const isImageUrl = url => {
   if (!url) return false
+  if (url.slice(0,4) == 'data'){
+    return true
+  }
   if (!isUrl(url)) return false
   const ext = new URL(url).pathname.split('.').pop()
   return imageExtensions.includes(ext)

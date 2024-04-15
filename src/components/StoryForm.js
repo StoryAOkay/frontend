@@ -65,8 +65,8 @@ export default function StoryForm(){
             return
         }
         const id = bookInfo.id
-        setCurStoryNull()
         const imageUrl = await generate_image_url(imageRef.current.value)
+        setCurStoryNull()
         const pageData = {pageNumber: 1}
         await axios()
             .put(`${base_url}/stories/${id}`, {
@@ -77,7 +77,8 @@ export default function StoryForm(){
                 html_content: `<div class=\"title\"><h1>${titleRef.current.value}</h1><img src= ${imageUrl}/></div>`
             })
             .then((res) => {
-                setCurBookInfo(res.data)                
+                setCurBookInfo(res.data) 
+                getMyBooks()               
                navigate(`/write/page/${pageData.pageNumber}`, pageData)
             })
             .catch((error) => {
