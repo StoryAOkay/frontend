@@ -7,7 +7,7 @@ const base_url = process.env.REACT_APP_BASE_URL;
 
 export function CurStoryProvider({ children }) {
   let [bookInfo, setBookInfo] = React.useState(null);
-  let [pages, setPages] = React.useState(null)
+  let [pages, setPages] = React.useState([])
   const setCurStoryNull = ()=>setBookInfo(null);
   const setCurBookInfo = (info) => {
     if (Object.keys(info).length == 0) {
@@ -15,7 +15,7 @@ export function CurStoryProvider({ children }) {
       return;
     }
 
-    setBookInfo({...info,
+    setBookInfo({
         title: info.title,
         image: info.image,
         description: info.description,
@@ -34,7 +34,9 @@ export function CurStoryProvider({ children }) {
             title: res.data.title,
             image: res.data.image,
             description: res.data.description,
-            id: res.data.id
+            id: res.data.id,
+            author_name: res.data.author_name ,
+            author_age: res.data.age
         })
       })
       .catch((error) => {
@@ -46,8 +48,9 @@ export function CurStoryProvider({ children }) {
     bookInfo,
     getBookInfo,
     setCurBookInfo,
-    setCurStoryNull
-  }), [bookInfo, getBookInfo,setCurBookInfo, setCurStoryNull]);
+    setCurStoryNull,
+    pages,
+  }), [bookInfo, getBookInfo,setCurBookInfo, setCurStoryNull, pages]);
   
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }

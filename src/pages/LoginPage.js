@@ -16,12 +16,14 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useAuth } from "../contexts/AuthContext";
 import BlackButton from "../components/black_button";
+import { useMyBooks } from "../contexts/MyBooksContext";
 
 function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const base_url = process.env.REACT_APP_BASE_URL;
     const { getUserProfile } = useAuth();
+    const {getMyBooks} = useMyBooks();
 
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -44,6 +46,7 @@ function LoginPage() {
                     sessionStorage.setItem("token", res.data.token);
                 }
                 getUserProfile();
+                getMyBooks();
             })
             .catch((error) => {
                 alert(error.message);

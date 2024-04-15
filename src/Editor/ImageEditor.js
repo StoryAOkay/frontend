@@ -14,7 +14,7 @@ import {
 } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { MButton, MIcon, Toolbar } from '../components/components'
-import { Text, Flex, Box,  Popover, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, FocusLock,  useDisclosure } from '@chakra-ui/react'
+import { Text, Flex, Box } from '@chakra-ui/react'
 import CustomEditor from '../Helpers/CustomEditor'
 
 import { Form } from '../components/popover_form'
@@ -178,7 +178,7 @@ const Image = ({ attributes, children, element }) => {
 export const generateAIImage = async(mprompt)=>{
   let mres = ''
   const base_url = process.env.REACT_APP_BASE_URL
-  const prompt = mprompt + ' with aspect ratio 2: 1'
+  const prompt = mprompt 
   await axios()
   .post(`${base_url}/pages/generateImage`, {
       prompt: prompt,

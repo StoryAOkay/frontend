@@ -6,6 +6,7 @@ import axios from "../axios";
 import { useCurStory } from "../contexts/CurrentStoryContext";
 import { generateAIImage, isImageUrl } from "../Editor/ImageEditor";
 import { useAuth } from "../contexts/AuthContext";
+import { useMyBooks } from "../contexts/MyBooksContext";
 
 export default function StoryForm(){
     const [isLoading, setIsLoading] = React.useState(false);
@@ -18,6 +19,7 @@ export default function StoryForm(){
     const base_url = process.env.REACT_APP_BASE_URL;
     const params = useParams()
     const {user} = useAuth()
+    const {getMyBooks} = useMyBooks()
 
     const generate_image_url = async (nurl)=>{
         if (isImageUrl(nurl)){
@@ -42,9 +44,13 @@ export default function StoryForm(){
                 title: titleRef.current.value,
                 description: descriptionRef.current.value,
                 image: imageUrl,
+                author_name: user.name,
+                author_age: user.age,
+                html_content: `<div class=\"title\"><h1>${titleRef.current.value}</h1><img src= ${imageUrl}/></div>`
             })
             .then((res) => {
                 setCurBookInfo(res.data)
+                getMyBooks()
                navigate(`/write/page/${pageData.pageNumber}`, pageData)
             })
             .catch((error) => {
@@ -68,9 +74,10 @@ export default function StoryForm(){
                 title: titleRef.current.value,
                 description: descriptionRef.current.value,
                 image: imageUrl,
+                html_content: `<div class=\"title\"><h1>${titleRef.current.value}</h1><img src= ${imageUrl}/></div>`
             })
             .then((res) => {
-                setCurBookInfo(res.data)
+                setCurBookInfo(res.data)                
                navigate(`/write/page/${pageData.pageNumber}`, pageData)
             })
             .catch((error) => {
