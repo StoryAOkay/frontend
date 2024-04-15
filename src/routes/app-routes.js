@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import EditorPickPage from "../pages/EditorPage";
 import MyStoriesPage from "../pages/MyStoriesPage";
-import StoryPage from "../pages/StoryPage";
+import StoryPage, { StoryPageEditor } from "../pages/StoryPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import { RequireAuth } from "../contexts/AuthContext";
@@ -12,7 +12,9 @@ export default function AppRouter() {
   return (
     <Routes>
       <Route path="/" end element={<RequireAuth><HomePage /></RequireAuth>} />
-      <Route path="/write" end element={<RequireAuth><StoryPage /></RequireAuth>} />
+      <Route path="/write" end element={<RequireAuth><StoryPage /></RequireAuth>} >
+          <Route path='/write/page/:pageNumber' end element={<RequireAuth><StoryPageEditor/></RequireAuth>} />      
+      </Route>
       <Route path="/editors" end element={<RequireAuth><EditorPickPage /></RequireAuth>} />
       <Route path="/mystories" end element={<RequireAuth><MyStoriesPage /></RequireAuth>} />
       <Route path="/login" end element={<LoginPage />} />

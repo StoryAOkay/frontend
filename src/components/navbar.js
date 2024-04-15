@@ -3,9 +3,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {Flex} from '@chakra-ui/react'
 import { useAuth } from "../contexts/AuthContext";
+import { useCurStory } from "../contexts/CurrentStoryContext";
 
 export default function Navbar() {
   const [isLoading, setIsLoading] = React.useState(false);
+  const {setCurStoryNull} = useCurStory()
   let auth = useAuth();
   const logout = () => {
     if (auth && auth.user && sessionStorage.hasOwnProperty("token")) {
@@ -29,7 +31,7 @@ export default function Navbar() {
               <NavLink to="/"> HOME </NavLink>
             </span>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" onClick={setCurStoryNull}>
             <span className="nav-link">
               <NavLink end to="/write"> CREATE STORY</NavLink>
             </span>

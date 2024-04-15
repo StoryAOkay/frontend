@@ -11,10 +11,12 @@ import MainFooter from './components/MainFooter';
 import MainHeader from './components/MainHeader';
 import AppRouter from './routes/app-routes';
 import { AuthProvider } from './contexts/AuthContext';
+import { CurStoryProvider } from './contexts/CurrentStoryContext';
 const App = () => {
 
   return (
     <AuthProvider>
+      <CurStoryProvider>
       <Flex position={'relative'} flexDirection='column' height='100vh' justifyContent={'center'}>
         <MainHeader />
         <Flex justifyContent={'center'} position='absolute' top={'120px'} bottom={'40px'} padding='2.5rem 2.5rem 2.5rem 2.5rem' width={'100%'} margin={'0 auto'} height={'calc( 100vh - 280px'} mt={'120px'}>
@@ -28,6 +30,8 @@ const App = () => {
         </Flex>
         <MainFooter />
       </Flex>
+      </CurStoryProvider>
+      
     </AuthProvider>
 
 

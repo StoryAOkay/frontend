@@ -175,7 +175,7 @@ const Image = ({ attributes, children, element }) => {
   )
 }
 
-const generateAIImage = async(mprompt)=>{
+export const generateAIImage = async(mprompt)=>{
   let mres = ''
   const base_url = process.env.REACT_APP_BASE_URL
   const prompt = mprompt + ' with aspect ratio 2: 1'
@@ -221,7 +221,7 @@ const InsertImageButton = () => {
   )
 }
 
-const isImageUrl = url => {
+export const isImageUrl = url => {
   if (!url) return false
   if (!isUrl(url)) return false
   const ext = new URL(url).pathname.split('.').pop()
