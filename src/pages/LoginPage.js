@@ -20,7 +20,7 @@ import BlackButton from "../components/black_button";
 function LoginPage() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const base_url = 'http://localhost:5000/api'
+    const base_url = process.env.REACT_APP_BASE_URL;
     const { getUserProfile } = useAuth();
 
     const emailRef = useRef();
@@ -77,9 +77,10 @@ function LoginPage() {
                         paddingLeft={"2rem"}
                         maxWidth='240px'
                         ref={emailRef}
+                        mb='1rem'
                     />
                     <Text>Password</Text>
-                    <InputGroup size="md" maxWidth='240px'  >
+                    <InputGroup size="md" maxWidth='240px' mb='1rem' >
                         <Input
                             pr="4.5rem"
                             type={passwordVisible ? "text" : "password"}
@@ -104,7 +105,7 @@ function LoginPage() {
                         </InputRightElement>
                     </InputGroup>
                     <BlackButton
-                        marginBottom="8px"
+                        marginBottom="16px"
                         borderRadius="20px"
                         height="60px"
                         width="240px"
