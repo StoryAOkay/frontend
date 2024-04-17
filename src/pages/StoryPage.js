@@ -4,12 +4,19 @@ import EditorWithImages from "../Editor/ImageEditor";
 import StoryPageFooter from "../components/story_page_footer";
 import StoryForm from "../components/StoryForm";
 import {Outlet, useParams} from 'react-router-dom'
-import { useNavigate } from 'react-router-dom';
 import { useCurStory } from "../contexts/CurrentStoryContext";
+
 
 function StoryPage(){
     const pageData = useParams()
-    const {setCurBookInfo, bookInfo} =useCurStory()
+    const { bookInfo, getAllPages  } =useCurStory()
+
+    React.useEffect(()=>{
+        if (bookInfo){
+            getAllPages(bookInfo.id)
+        }
+            
+    },[bookInfo])
     return (
         <Box >
            { Object.keys(pageData).length === 0  || pageData.pageNumber === '0'? <StoryForm />  :  <Outlet /> }
@@ -18,6 +25,7 @@ function StoryPage(){
     )
 }
 export function StoryPageEditor(){
+    
     
     return(
         <>
