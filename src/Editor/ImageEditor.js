@@ -7,8 +7,6 @@ import {
   Slate,
   Editable,
   useSlateStatic,
-  useSelected,
-  useFocused,
   withReact,
   ReactEditor,
 } from 'slate-react'
@@ -17,7 +15,6 @@ import { MButton, MIcon, Toolbar } from '../components/components'
 import { Text, Flex, Box } from '@chakra-ui/react'
 import CustomEditor from '../Helpers/CustomEditor'
 
-import { Form } from '../components/popover_form'
 import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
 import axios from "../axios";
@@ -155,8 +152,6 @@ const Image = ({ attributes, children, element }) => {
   const editor = useSlateStatic()
   const path = ReactEditor.findPath(editor, element)
 
-  const selected = useSelected()
-  const focused = useFocused()
   return (
     <Box {...attributes} padding={'1rem'}>
       {children}
@@ -168,6 +163,7 @@ const Image = ({ attributes, children, element }) => {
           src={element.url}
           height={'100px'}
           width={'280px'}
+          alt={'ai generated'}
         />
         <MButton
           variant='ghost'
@@ -232,7 +228,7 @@ const InsertImageButton = () => {
 
 export const isImageUrl = url => {
   if (!url) return false
-  if (url.slice(0,4) == 'data'){
+  if (url.slice(0,4) === 'data'){
     return true
   }
   if (!isUrl(url)) return false

@@ -16,7 +16,7 @@ function StoryPage(){
             getAllPages(bookInfo.id)
         }
             
-    },[bookInfo])
+    },[bookInfo, getAllPages])
     return (
         <Box >
            { Object.keys(pageData).length === 0  || pageData.pageNumber === '0'? <StoryForm />  :  <Outlet /> }
