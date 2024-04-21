@@ -7,7 +7,7 @@ const BlackButton = ({ children, ...props }) => (
       {...props}
       bg="#662e9b"
       color="white"
-      _hover={{ bg: "gray.900" }}
+      _hover={{ bg: "#8c4cca" }}
     >
       {children}
     </Button>
