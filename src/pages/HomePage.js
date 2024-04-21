@@ -21,7 +21,7 @@ function HomePage(){
             alignItems="center"
         >
             <Box width={'280px'} textAlign={'left'}>
-                <Heading as='h2' fontSize='54px' pb='3rem' fontFamily={'Mountains of Christmas'}>{`Welcome ${name} !`}</Heading>                
+                <Heading as='h2' color='#662e9b' fontSize='54px' pb='3rem' fontFamily={'Mountains of Christmas'}>{`Welcome ${name} !`}</Heading>                
                 
                 
                 <BlackButton
@@ -46,7 +46,7 @@ function HomePage(){
                     marginTop={"2rem"}
                     onClick={()=> navigate('/mystories')}
                     background='#fff'
-                    color='black'
+                    color='#662e9b'
                     variant={'outline'}
                 >
                   MY STORIES
@@ -56,7 +56,7 @@ function HomePage(){
                     borderRadius="20px"
                     height="60px"
                     width="240px"
-                    color="black"
+                    color="#662e9b"
                     background={"#fff"}
                     fontSize="24px"
                     marginTop={"2rem"}

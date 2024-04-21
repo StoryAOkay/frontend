@@ -68,7 +68,8 @@ export const MIcon = React.forwardRef(
   ) =>
   {
     return (
-        <Icon  as={ props.eltype === 'delete' ? TiDeleteOutline :  props.eltype === 'style' ? RxFontStyle : props.eltype ==='edit'? FaRegEdit : FaImages } boxSize={props.boxSize|| 10}   {...props} color='black.200' 
+        <Icon  as={ props.eltype === 'delete' ? TiDeleteOutline :  props.eltype === 'style' ? RxFontStyle : props.eltype ==='edit'? FaRegEdit : FaImages } boxSize={props.boxSize|| 10}   {...props} color='
+        #662e9b' 
         ref={ref} marginRight={props.marginRight || '0.5rem'}/>
   )}
 )

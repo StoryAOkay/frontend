@@ -44,9 +44,9 @@ li {
 }
 
  li span .active{
-  color: #776871;
+  color: #edafb8;
 }
 
 li :hover {
-  color: #a799b7; /* Hover color */
+  color: #f6d9dd; /* Hover color */
 }
