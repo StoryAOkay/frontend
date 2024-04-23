@@ -26,7 +26,7 @@ const App = () => {
           {/* <SlateEditor/> */}
           {/* < EditorWithImages /> */}
           {/* < CollaborativeEditor/> */}
-          <Box width='658px' >
+          <Box >
             <AppRouter />
           </Box>
 
