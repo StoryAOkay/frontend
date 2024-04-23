@@ -18,7 +18,7 @@ function StoryPage(){
             
     },[bookInfo, getAllPages])
     return (
-        <Box >
+        <Box width='658px' >
            { Object.keys(pageData).length === 0  || pageData.pageNumber === '0'? <StoryForm />  :  <Outlet /> }
         </Box>
         
@@ -28,10 +28,10 @@ export function StoryPageEditor(){
     
     
     return(
-        <>
+        <Box>
             < EditorWithImages /> 
               <StoryPageFooter />
-        </>
+        </Box>
     )
 }
 export default StoryPage;

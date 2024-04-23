@@ -14,7 +14,7 @@ export default function BookThumbnail({ books, canWrite }) {
         
     }
     return (
-        <Flex justifyContent={'space-between'} flexWrap={'wrap'}>
+        <Flex justifyContent={'space-around'} flexWrap={'wrap'}>
 
             {books.map(
                 (book) => {      
@@ -23,7 +23,7 @@ export default function BookThumbnail({ books, canWrite }) {
 
                         <Popover key={book._id} maxW='180px' >
                             <PopoverTrigger>
-                                <Box border='1px solid black' borderRadius='30px' padding='1.25rem' width='240px'>
+                                <Box border='1px solid black' borderRadius='30px' padding='1.25rem' width='240px' mb={'2rem'} marginRight={'2rem'}>
                                     <Image src={book.image} height='165px' borderRadius={'40px'} style={{'margin': 'auto'}}/>
                                     <Text fontWeight={600} textTransform={'uppercase'} mt='0.5rem'>{book.title}</Text>
                                 </Box>
@@ -53,7 +53,7 @@ export default function BookThumbnail({ books, canWrite }) {
                                         width="100%"
                                         fontWeight={'normal'}
                                         fontSize="20px"
-
+                                        onClick={()=> navigate('/read')}
                                     >
                                         Read
                                     </BlackButton>

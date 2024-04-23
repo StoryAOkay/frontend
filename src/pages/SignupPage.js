@@ -63,7 +63,7 @@ function SignupPage(){
       }, 2000);
     };
     return (
-        <Box>
+        <Box width='658px' >
            
             <Flex
           py="1rem"
