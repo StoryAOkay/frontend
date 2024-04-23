@@ -5,9 +5,9 @@ import {
 const BlackButton = ({ children, ...props }) => (
     <Button
       {...props}
-      bg="black"
+      bg="#662e9b"
       color="white"
-      _hover={{ bg: "gray.900" }}
+      _hover={{ bg: "#8c4cca" }}
     >
       {children}
     </Button>

@@ -7,8 +7,6 @@ import {
   Slate,
   Editable,
   useSlateStatic,
-  useSelected,
-  useFocused,
   withReact,
   ReactEditor,
 } from 'slate-react'
@@ -17,25 +15,22 @@ import { MButton, MIcon, Toolbar } from '../components/components'
 import { Text, Flex, Box } from '@chakra-ui/react'
 import CustomEditor from '../Helpers/CustomEditor'
 
-import { Form } from '../components/popover_form'
 import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
 import axios from "../axios";
 
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: '',
-      },
-    ],
-
-  },]
-
-
 
 const EditorWithImages = () => {
+  const initialValue = useMemo(
+    () =>
+      JSON.parse(sessionStorage.getItem('content')) || [
+        {
+          type: 'paragraph',
+          children: [{ text: '' }],
+        },
+      ],
+    []
+  )
   const editor = useMemo(
     () => withImages(withHistory(withReact(createEditor()))),
     []
@@ -46,7 +41,18 @@ const EditorWithImages = () => {
 
 
   return (
-    <Slate editor={editor} initialValue={initialValue}>
+    <Slate editor={editor} initialValue={initialValue} onChange={value => {
+      
+      const isAstChange = editor.operations.some(
+        op => 'set_selection' !== op.type
+      )
+      if (isAstChange) {
+        const content = JSON.stringify(value)
+        if(content){
+          sessionStorage.setItem('content', content)
+        }   
+      }
+    }}>
       <Toolbar>
         <Flex justifyContent={'space-between'} marginBottom={'1.25rem'}>
            <WriteWithAIButton/>
@@ -127,7 +133,7 @@ const insertImage = (editor, url) => {
   Transforms.insertNodes(editor, image)
   Transforms.insertNodes(editor, {
     type: 'paragraph',
-    children: [{ text: '' }],
+    children: [text ],
   })
 }
 
@@ -146,8 +152,6 @@ const Image = ({ attributes, children, element }) => {
   const editor = useSlateStatic()
   const path = ReactEditor.findPath(editor, element)
 
-  const selected = useSelected()
-  const focused = useFocused()
   return (
     <Box {...attributes} padding={'1rem'}>
       {children}
@@ -159,6 +163,7 @@ const Image = ({ attributes, children, element }) => {
           src={element.url}
           height={'100px'}
           width={'280px'}
+          alt={'ai generated'}
         />
         <MButton
           variant='ghost'
@@ -223,7 +228,7 @@ const InsertImageButton = () => {
 
 export const isImageUrl = url => {
   if (!url) return false
-  if (url.slice(0,4) == 'data'){
+  if (url.slice(0,4) === 'data'){
     return true
   }
   if (!isUrl(url)) return false

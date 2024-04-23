@@ -7,6 +7,7 @@ import StoryPage, { StoryPageEditor } from "../pages/StoryPage";
 import LoginPage from "../pages/LoginPage";
 import SignupPage from "../pages/SignupPage";
 import { RequireAuth } from "../contexts/AuthContext";
+import StoryReader from "../reader/StoryReader";
 
 export default function AppRouter() {
   return (
@@ -16,10 +17,11 @@ export default function AppRouter() {
           <Route path='/write/page/:pageNumber' end element={<RequireAuth><StoryPageEditor/></RequireAuth>} />      
       </Route>
       <Route path="/editors" end element={<RequireAuth><EditorPickPage /></RequireAuth>} />
+      <Route path="/read" end element={<RequireAuth><StoryReader/></RequireAuth>} ></Route>
       <Route path="/mystories" end element={<RequireAuth><MyStoriesPage /></RequireAuth>} />
       <Route path="/login" end element={<LoginPage />} />
-      <Route path="/signup" end element={<SignupPage />} />
-      
+      <Route path="/signup" end element={<SignupPage />} />     
+   
     </Routes>
   );
 }

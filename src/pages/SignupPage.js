@@ -63,7 +63,7 @@ function SignupPage(){
       }, 2000);
     };
     return (
-        <Box>
+        <Box width='658px' >
            
             <Flex
           py="1rem"
@@ -71,7 +71,7 @@ function SignupPage(){
           alignItems="center"
         >
             <Box  width={'240px'} textAlign={'left'}>
-                <Heading as='h2' fontSize='54px'pb='1.5rem' fontFamily={'Mountains of Christmas'}>StoryAOkay</Heading>
+                <Heading as='h2' color='#662e9b' fontSize='54px'pb='1.5rem' fontFamily={'Mountains of Christmas'}>StoryNasi</Heading>
             <Text>Name</Text>
             <Input
               type="text"

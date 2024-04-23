@@ -44,9 +44,123 @@ li {
 }
 
  li span .active{
-  color: #776871;
+  color: #edafb8;
 }
 
 li :hover {
-  color: #a799b7; /* Hover color */
+  color: #f6d9dd; /* Hover color */
 }
+
+
+*, html {
+  box-sizing: border-box;
+}
+
+body {
+  overscroll-behavior-y: contain;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  font-family: "Libre Baskerville", serif;
+}
+
+#book-container {
+  margin: 0px auto;
+  position: relative;
+  display: flex;
+}
+
+img {
+  pointer-events: none;
+}
+
+.page .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.page .number {
+  font-size: 14px;
+  font-weight: bolder;
+
+}
+
+.page  h1 {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 60px auto 0 auto;
+  line-height: 2.5;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+.page .right {
+  text-align: right;
+}
+
+.page h3, .page h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  cursor: pointer;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  box-shadow: inset -2px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  padding: 0px 30px;
+  font-size: 14px;
+  transform-origin: 0% 0%;
+}
+
+.page:first-child {
+  left: 0;
+}
+
+.page .img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page .img img, p img{
+  max-height: 320px;
+  margin: 20px auto;
+  height : 320px;
+}
+
+.shadow {
+  position: absolute;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.3) 0%, rgba(184, 184, 184, 0) 100%);
+  width: 60px;
+  height: 100%;
+  z-index: 2;
+  transform-origin: 0 0;
+}
+
+.copy {
+  width: 600px;
+  text-align: center;
+}
+.tbold{
+  font-weight: 700;
+}
+.tunderlined{
+  text-decoration: underline;
+}
+.titalics{
+  font-style: italic;
+}
+.page{
+  padding: 40px;
+}
+.tpadding, .pages div p {
+  padding-bottom: 12px;
+}
+

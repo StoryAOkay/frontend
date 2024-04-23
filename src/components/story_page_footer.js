@@ -8,16 +8,24 @@ import { useCurStory } from "../contexts/CurrentStoryContext";
 function StoryPageFooter(){
     const navigate = useNavigate();
     const pageData = useParams();
-    const {bookInfo} = useCurStory()
-    if (!bookInfo){
-        navigate('/')
+    const {bookInfo, createPage, updatePage} = useCurStory()
+  
+
+    const goToNextPage = async ()=>{
+        await createPage(bookInfo.id)    
+        navigate(`/write/page/${parseInt(pageData.pageNumber) + 1}`, {pageNumber : parseInt(pageData.pageNumber) + 1})
     }
+    const goToPrevPage = async ()=>{
+        await updatePage(bookInfo.id)
+        pageData.pageNumber == '1' ? navigate('/write')  : navigate(`/write/page/${parseInt(pageData.pageNumber) - 1 }`, {pageNumber : parseInt(pageData.pageNumber) - 1 })
+        
+    }
+   
     return(
         <Box marginY={'2.5rem'}>
             <Flex justifyContent={ 'space-around'}>
-            <Button onClick={()=> { 
-                 pageData.pageNumber == '1' ? navigate('/write')  : navigate(`/write/page/${parseInt(pageData.pageNumber) - 1 }`, {pageNumber : parseInt(pageData.pageNumber) - 1 })}} fontSize={'1rem'} color={'black'} variant={'outline'} width>Previous Page</Button>
-            <BlackButton fontSize={'1rem'} >Next Page</BlackButton>
+            <Button onClick={goToPrevPage} fontSize={'1rem'} color={'black'} variant={'outline'} width>Previous Page</Button>
+            <BlackButton fontSize={'1rem'} onClick={goToNextPage} >Next Page</BlackButton>
             </Flex>
             <Flex justifyContent={ 'space-around'}>
             <Button fontSize={'1rem'} color={'black'} variant={'outline'}>End Story</Button>

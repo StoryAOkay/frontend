@@ -59,7 +59,7 @@ function LoginPage() {
         }, 2000);
     };
     return (
-        <Box>
+        <Box width='658px' >
 
             <Flex
                 py="5rem"
@@ -67,7 +67,7 @@ function LoginPage() {
                 alignItems="center"
             >
                 <Box width={'240px'} textAlign={'left'}>
-                    <Heading as='h2' fontSize='54px' pb='3rem' fontFamily={'Mountains of Christmas'}>StoryAOkay</Heading>                
+                    <Heading as='h2' fontSize='54px' pb='3rem' color='#662e9b' fontFamily={'Mountains of Christmas'}>StoryNasi</Heading>                
                     
                     <Text >Email</Text>
                     <Input
