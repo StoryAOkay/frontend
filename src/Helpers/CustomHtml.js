@@ -90,7 +90,6 @@ export default function getHtmlContent(jsonString, pageNum){
 
     }
     let res = removeEscapeCharacters(`<p class='number'>${pageNum}</p>` + txt)
-    debugger
    
     return res
 }

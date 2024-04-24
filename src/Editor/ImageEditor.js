@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import imageExtensions from 'image-extensions'
 import isUrl from 'is-url'
 import isHotkey from 'is-hotkey'
-import { Transforms, createEditor, Editor } from 'slate'
+import { Transforms, createEditor, Editor, Range } from 'slate'
 import {
   Slate,
   Editable,
@@ -37,10 +37,16 @@ const EditorWithImages = () => {
   const renderLeaf = React.useCallback(props => {
     return <Leaf {...props} />
   }, [])
+  const handleButtonClick = React.useCallback(() => {
+    const { selection } = editor
+    if (selection === null) {
+      Transforms.select(editor, Editor.start(editor, []))
+    }
+  }, [editor])
  React.useEffect(()=>{
-    // if
-  console.log(pageContent)
- }, [pageContent])
+    //if
+  console.log(editor, editor.selection)
+ }, [editor, editor.selection])
 
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={value => {
@@ -56,7 +62,7 @@ const EditorWithImages = () => {
       }
     }}>
       <Toolbar>
-        <Flex justifyContent={'space-between'} marginBottom={'1.25rem'}>
+        <Flex justifyContent={'space-between'} marginBottom={'1.25rem'} onClick={handleButtonClick}>
            <WriteWithAIButton/>
           <StyleTextButton />
           <InsertImageButton />
@@ -207,14 +213,20 @@ const InsertImageButton = () => {
     <MButton
       onMouseDown={async (event) => {
         event.preventDefault()
+        if(!editor.selection){
+          Transforms.select(editor, Editor.start(editor, []))
+          Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
+          return
+        }
         const selectedText = Editor.string(editor, editor.selection);
         if (!selectedText){
+          Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
           return
         }
         const url = await generateAIImage(selectedText);
       
         if (url && !isImageUrl(url)) {
-          alert('URL is not an image')
+          Transforms.insertText(editor, 'Kindly add a detailed prompt to generate an image')
           return
         }
         url && insertImage(editor, url)
