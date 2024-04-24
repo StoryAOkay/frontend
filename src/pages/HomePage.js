@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import {Box, Heading, Flex, Button} from '@chakra-ui/react';
 import BlackButton from "../components/black_button";
 import { useAuth } from "../contexts/AuthContext";
+import { useCurStory } from "../contexts/CurrentStoryContext";
 
 function HomePage(){
+    const {setCurStoryNull}  = useCurStory()
     const navigate = useNavigate();
     let auth = useAuth();
     if (!auth){
@@ -33,7 +35,7 @@ function HomePage(){
                     background={"#3182CE"}
                     fontSize="24px"
                     marginTop={"2rem"}
-                    onClick={()=> navigate('/write')}
+                    onClick={()=> {navigate('/write'); setCurStoryNull()}}
                 >
                   CREATE STORY
                 </BlackButton>

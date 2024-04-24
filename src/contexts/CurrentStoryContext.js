@@ -121,7 +121,17 @@ export function CurStoryProvider({ children }) {
         alert(error.response.data.message);
       });
   }
+const finishStory = async()=>{
+ 
+  await axios()
+      .put(`${base_url}/pages/stories/${bookInfo.id}`, {isEnd: true })
+      .then((res) => {
+              })
+      .catch((error) => {
 
+        alert(error.response.data.message);
+      });
+}
   const value = React.useMemo(() => ({
     bookInfo,
     getBookInfo,
@@ -136,9 +146,10 @@ export function CurStoryProvider({ children }) {
     getPageContent,
     editor,
     content,
-    setContent
+    setContent,
+    finishStory
 
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent]);
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent, finishStory]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }
