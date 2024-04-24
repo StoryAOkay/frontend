@@ -61,7 +61,7 @@ export default function StoryForm(){
     }
     const update = async (event)=>{
         event.preventDefault();
-        if ( !bookInfo || !Object.keys(bookInfo).length > 0){
+        if ( !bookInfo || (bookInfo && !Object.keys(bookInfo).length > 0)){
             return
         }
         const id = bookInfo.id

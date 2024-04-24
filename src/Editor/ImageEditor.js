@@ -19,11 +19,11 @@ import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
 import axios from "../axios";
 import { useCurStory } from '../contexts/CurrentStoryContext'
-
+import { useParams } from 'react-router-dom'
 
 const EditorWithImages = () => {
- const {editor, pages, setPageContent, pageContent, getContentPage} = useCurStory()
-
+ const {editor, pages, setContent, getPageContent} = useCurStory()
+ const pageData = useParams();
   const initialValue = useMemo(
     () =>
        [
@@ -43,10 +43,17 @@ const EditorWithImages = () => {
       Transforms.select(editor, Editor.start(editor, []))
     }
   }, [editor])
+
  React.useEffect(()=>{
-    //if
-  // console.log(editor, editor.selection)
- }, [editor, editor.selection])
+  // debugger
+    if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
+      getPageContent(pageData.pageNumber)
+      setContent(pages[pageData.pageNumber].content)
+      const newValue = JSON.parse(pages[pageData.pageNumber].content)
+       editor.children = newValue
+    }
+
+ }, [pageData, editor, getPageContent, setContent, pages])
 
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={value => {
@@ -57,7 +64,7 @@ const EditorWithImages = () => {
       if (isAstChange) {
         const content = JSON.stringify(value)
         if(content){
-          setPageContent(content)
+          setContent(content)
         }   
       }
     }}>
@@ -111,7 +118,11 @@ export const withImages = editor => {
   editor.insertData = data => {
     const text = data.getData('text/plain')
     const { files } = data
-
+    if(!data){
+      return
+    }
+    console.log({files} ,  {text}, typeof files)
+    debugger
     if (files && files.length > 0) {
       for (const file of files) {
         const reader = new FileReader()

@@ -13,14 +13,15 @@ const base_url = process.env.REACT_APP_BASE_URL;
 export function CurStoryProvider({ children }) {
   let [bookInfo, setBookInfo] = React.useState(null);
   let [pages, setPages] = React.useState(null)
-  let [pageContent, setPageContent] = React.useState({})
+  let [pageContent, setPageContent] = React.useState('')
+  let [content, setContent] = React.useState({})
   const editor = React.useMemo(
     () => withImages(withHistory(withReact(createEditor()))),
     []
   )
    const setCurStoryNull = () => setBookInfo(null);
   const setCurBookInfo = (info) => {
-    if (Object.keys(info).length == 0) {
+    if ( info && Object.keys(info).length == 0) {
       setBookInfo(null);
       return;
     }
@@ -33,7 +34,7 @@ export function CurStoryProvider({ children }) {
     })
   }
   const getPageContent =(pageNum)=>{
-    if(pageNum in pages){
+    if(pages && Object.keys(pages).length > 0 && pageNum in pages){
       setPageContent(pages[pageNum])
     }
     
@@ -58,7 +59,7 @@ export function CurStoryProvider({ children }) {
 
   }, [bookInfo])
   const getBookInfo = React.useCallback(async (book_id) => {
-    if (Object.keys(bookInfo).length > 0 && bookInfo.id == book_id) {
+    if (bookInfo && Object.keys(bookInfo).length > 0 && bookInfo.id == book_id) {
       return
     }
 
@@ -80,45 +81,45 @@ export function CurStoryProvider({ children }) {
       });
   }, [])
   const createPage = async (book_id) => {
-    const html_content = getHtmlContent(pageContent, 1)
+    const html_content = getHtmlContent(content, 1)
+    let pageN;
+    await axios()
+      .post(`${base_url}/stories/${book_id}/pages`, { content: content, html_content: html_content })
+      .then((res) => {
+        setPageContent({
+          id: res.data.id,
+          content: res.data.content,
+          html_content: res.data.html_content,
+          page_number: res.data.pageNumber
+        })
+            pageN = res.data.pageNumber
+        setPageContent({...pages, pageN: pageContent})
+      })
+      .catch((error) => {
 
-    // await axios()
-    //   .post(`${base_url}/stories/${book_id}/pages`, { content: content, html_content: html_content })
-    //   .then((res) => {
-    //     setPage({
-    //       ...res.data,
-    //       id: res.data.id,
-    //       content: res.data.content,
-    //       html_content: res.data.html_content,
-    //       page_number: res.data.pageNumber
-    //     })
-          //  pageNumber  = res.data.pageNumber
-    //     setPages({...pages, pageNumber: page})
-    //   })
-    //   .catch((error) => {
-
-    //     alert(error.response.data.message);
-    //   });
+        alert(error.response.data.message);
+      });
   }
   const updatePage = async () => {
-    const html_content = getHtmlContent(pageContent.content, pageContent.pageNumber)
-    // await axios()
-    //   .put(`${base_url}/pages/${page.id}`, { content: content, html_content: html_content })
-    //   .then((res) => {
-    //     setPage({
-    //       ...res.data,
-    //       id: res.data.id,
-    //       content: res.data.content,
-    //       html_content: res.data.html_content,
-    //       page_number: res.data.pageNumber
-    //     })
-    //     pageNumber = res.data.pageNumber
-    //     setPages({...pages, pageNumber: page})
-    //   })
-    //   .catch((error) => {
+    const html_content = getHtmlContent(content, pageContent.pageNumber)
+    let pageN;
 
-    //     alert(error.response.data.message);
-    //   });
+    await axios()
+      .put(`${base_url}/pages/${pageContent.id}`, {...pageContent, content: content, html_content: html_content })
+      .then((res) => {
+        setPageContent({
+          id: res.data.id,
+          content: res.data.content,
+          html_content: res.data.html_content,
+          page_number: res.data.pageNumber
+        })
+        pageN = res.data.pageNumber
+        setPages({...pages, pageN: pageContent})
+      })
+      .catch((error) => {
+
+        alert(error.response.data.message);
+      });
   }
 
   const value = React.useMemo(() => ({
@@ -133,9 +134,11 @@ export function CurStoryProvider({ children }) {
     pageContent,
     setPageContent,
     getPageContent,
-    editor
+    editor,
+    content,
+    setContent
 
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor]);
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }

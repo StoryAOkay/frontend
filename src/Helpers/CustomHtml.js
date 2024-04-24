@@ -1,20 +1,25 @@
 function removeEscapeCharacters(htmlString) {
     const parser = new DOMParser();
-  
-
     const doc = parser.parseFromString(htmlString, "text/html");
- 
     const body = doc.body;
   
+    // Replace backslashes
     for (let i = 0; i < body.childNodes.length; i++) {
       const node = body.childNodes[i];
-  
       if (node.nodeType === Node.TEXT_NODE) {
-        node.nodeValue = node.nodeValue.replace(/\\/g, ""); 
+        node.nodeValue = node.nodeValue.replace(/\\/g, "");
       }
     }
   
-    return body.innerHTML;
+    // Decode HTML entities
+    const decodedHTML = body.innerHTML
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+  
+    return decodedHTML;
   }
   
  
