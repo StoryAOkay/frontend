@@ -45,7 +45,6 @@ const EditorWithImages = () => {
   }, [editor])
 
  React.useEffect(()=>{
-  // debugger
     if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
       getPageContent(pageData.pageNumber)
       setContent(pages[pageData.pageNumber].content)
@@ -121,8 +120,6 @@ export const withImages = editor => {
     if(!data){
       return
     }
-    console.log({files} ,  {text}, typeof files)
-    debugger
     if (files && files.length > 0) {
       for (const file of files) {
         const reader = new FileReader()

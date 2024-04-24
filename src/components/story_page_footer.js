@@ -20,16 +20,25 @@ function StoryPageFooter() {
         } else  if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
             await updatePage(bookInfo.id)
             setPageContent({})
-            debugger
             if (editor.children) {
-                editor.children = null
+                editor.children =  [
+                    {
+                      type: 'paragraph',
+                      children: [{ text: '' }],
+                    },
+                  ]
             }
             navigate(`/write/page/${parseInt(pageData.pageNumber) + 1}`, { pageNumber: parseInt(pageData.pageNumber) + 1 })
           }else {
             await createPage(bookInfo.id)
             setContent('')
             if (editor.children) {
-                editor.children = null
+                editor.children =  [
+                    {
+                      type: 'paragraph',
+                      children: [{ text: '' }],
+                    },
+                  ]
             }
             navigate(`/write/page/${parseInt(pageData.pageNumber) + 1}`, { pageNumber: parseInt(pageData.pageNumber) + 1 })
         }
@@ -41,7 +50,12 @@ function StoryPageFooter() {
             setContent('')
         if (editor.children) {
 
-            editor.children = null
+            editor.children =  [
+                {
+                  type: 'paragraph',
+                  children: [{ text: '' }],
+                },
+              ]
         }
 
         }
