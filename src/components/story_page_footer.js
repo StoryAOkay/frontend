@@ -8,7 +8,7 @@ import { useCurStory } from "../contexts/CurrentStoryContext";
 function StoryPageFooter() {
     const navigate = useNavigate();
     const pageData = useParams();
-    const { bookInfo, createPage, updatePage, content, setContent, setPageContent, editor, pages } = useCurStory()
+    const { bookInfo, createPage, updatePage, content, setContent, setPageContent, editor, pages, finishStory } = useCurStory()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = React.useRef()
 
@@ -97,7 +97,7 @@ function StoryPageFooter() {
                 </AlertDialog>
             </Flex>
             <Flex justifyContent={'space-around'}>
-                <Button fontSize={'1rem'} color={'black'} variant={'outline'}>End Story</Button>
+                <Button fontSize={'1rem'} color={'black'} variant={'outline'} onclick={finishStory}>End Story</Button>
             </Flex>
 
         </Box>
