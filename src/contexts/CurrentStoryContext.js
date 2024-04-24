@@ -38,7 +38,7 @@ export function CurStoryProvider({ children }) {
     }
     
   }
-  const getAllPages  = async ()=>{
+  const getAllPages  = React.useCallback(async ()=>{
     let  initialPages ;
     await axios()
     .get(`${base_url}/stories/${bookInfo.id}/pages`)
@@ -56,7 +56,7 @@ export function CurStoryProvider({ children }) {
       alert(error.response.data.message);
     });
 
-  }
+  }, [bookInfo])
   const getBookInfo = React.useCallback(async (book_id) => {
     if (Object.keys(bookInfo).length > 0 && bookInfo.id == book_id) {
       return
@@ -80,8 +80,7 @@ export function CurStoryProvider({ children }) {
       });
   }, [])
   const createPage = async (book_id) => {
-    const jcontent = JSON.parse(pageContent)
-    const html_content = getHtmlContent(jcontent)
+    const html_content = getHtmlContent(pageContent, 1)
 
     // await axios()
     //   .post(`${base_url}/stories/${book_id}/pages`, { content: content, html_content: html_content })
@@ -102,8 +101,7 @@ export function CurStoryProvider({ children }) {
     //   });
   }
   const updatePage = async () => {
-    const jcontent = JSON.parse(pageContent)
-    const html_content = getHtmlContent(jcontent)
+    const html_content = getHtmlContent(pageContent.content, pageContent.pageNumber)
     // await axios()
     //   .put(`${base_url}/pages/${page.id}`, { content: content, html_content: html_content })
     //   .then((res) => {
