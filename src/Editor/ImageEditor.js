@@ -18,27 +18,29 @@ import CustomEditor from '../Helpers/CustomEditor'
 import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
 import axios from "../axios";
+import { useCurStory } from '../contexts/CurrentStoryContext'
 
 
 const EditorWithImages = () => {
+ const {editor, pages, setPageContent, pageContent, getContentPage} = useCurStory()
+
   const initialValue = useMemo(
     () =>
-      JSON.parse(sessionStorage.getItem('content')) || [
+       [
         {
           type: 'paragraph',
           children: [{ text: '' }],
         },
       ],
     []
-  )
-  const editor = useMemo(
-    () => withImages(withHistory(withReact(createEditor()))),
-    []
-  )
+  )  
   const renderLeaf = React.useCallback(props => {
     return <Leaf {...props} />
   }, [])
-
+ React.useEffect(()=>{
+    // if
+  console.log(pageContent)
+ }, [pageContent])
 
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={value => {
@@ -49,7 +51,7 @@ const EditorWithImages = () => {
       if (isAstChange) {
         const content = JSON.stringify(value)
         if(content){
-          sessionStorage.setItem('content', content)
+          setPageContent(content)
         }   
       }
     }}>
@@ -92,7 +94,7 @@ const EditorWithImages = () => {
   )
 }
 
-const withImages = editor => {
+export const withImages = editor => {
   const { insertData, isVoid } = editor
 
   editor.isVoid = element => {

@@ -1,6 +1,10 @@
 import React from "react";
 import axios from "../axios";
+import { createEditor } from 'slate'
+import { withReact } from 'slate-react'
+import { withHistory } from 'slate-history'
 import getHtmlContent from "../Helpers/CustomHtml";
+import { withImages } from "../Editor/ImageEditor";
 
 let CurStoryContext = React.createContext(null);
 
@@ -8,8 +12,13 @@ const base_url = process.env.REACT_APP_BASE_URL;
 
 export function CurStoryProvider({ children }) {
   let [bookInfo, setBookInfo] = React.useState(null);
-  let [pages, setPages] = React.useState({})
-  const setCurStoryNull = () => setBookInfo(null);
+  let [pages, setPages] = React.useState(null)
+  let [pageContent, setPageContent] = React.useState({})
+  const editor = React.useMemo(
+    () => withImages(withHistory(withReact(createEditor()))),
+    []
+  )
+   const setCurStoryNull = () => setBookInfo(null);
   const setCurBookInfo = (info) => {
     if (Object.keys(info).length == 0) {
       setBookInfo(null);
@@ -22,6 +31,12 @@ export function CurStoryProvider({ children }) {
       description: info.description,
       id: info.id
     })
+  }
+  const getPageContent =(pageNum)=>{
+    if(pageNum in pages){
+      setPageContent(pages[pageNum])
+    }
+    
   }
   const getAllPages  = async ()=>{
     let  initialPages ;
@@ -65,8 +80,7 @@ export function CurStoryProvider({ children }) {
       });
   }, [])
   const createPage = async (book_id) => {
-    const content = sessionStorage.getItem("content")
-    const jcontent = JSON.parse(content)
+    const jcontent = JSON.parse(pageContent)
     const html_content = getHtmlContent(jcontent)
 
     // await axios()
@@ -88,8 +102,7 @@ export function CurStoryProvider({ children }) {
     //   });
   }
   const updatePage = async () => {
-    const content = sessionStorage.getItem("content")
-    const jcontent = JSON.parse(content)
+    const jcontent = JSON.parse(pageContent)
     const html_content = getHtmlContent(jcontent)
     // await axios()
     //   .put(`${base_url}/pages/${page.id}`, { content: content, html_content: html_content })
@@ -118,8 +131,13 @@ export function CurStoryProvider({ children }) {
     pages,
     createPage,
     updatePage,
-    getAllPages
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages]);
+    getAllPages,
+    pageContent,
+    setPageContent,
+    getPageContent,
+    editor
+
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }
