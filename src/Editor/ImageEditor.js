@@ -22,18 +22,18 @@ import { useCurStory } from '../contexts/CurrentStoryContext'
 import { useParams } from 'react-router-dom'
 
 const EditorWithImages = () => {
- const {editor, pages, setContent, getPageContent} = useCurStory()
- const pageData = useParams();
+  const { editor, pages, setContent, getPageContent, bookInfo } = useCurStory()
+  const pageData = useParams();
   const initialValue = useMemo(
     () =>
-       [
+      [
         {
           type: 'paragraph',
           children: [{ text: '' }],
         },
       ],
     []
-  )  
+  )
   const renderLeaf = React.useCallback(props => {
     return <Leaf {...props} />
   }, [])
@@ -44,32 +44,35 @@ const EditorWithImages = () => {
     }
   }, [editor])
 
- React.useEffect(()=>{
-    if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
-      getPageContent(pageData.pageNumber)
-      setContent(pages[pageData.pageNumber].content)
-      const newValue = JSON.parse(pages[pageData.pageNumber].content)
-       editor.children = newValue
+  React.useEffect(() => {
+    if (pages && Object.keys(pages).length > 0 && pageData.pageNumber in pages) {
+
+      if (pages[pageData.pageNumber].storyId == bookInfo.id) {
+        getPageContent(pageData.pageNumber)
+        setContent(pages[pageData.pageNumber].content)
+        const newValue = JSON.parse(pages[pageData.pageNumber].content)
+        editor.children = newValue
+      }
     }
 
- }, [pageData, editor, getPageContent, setContent, pages])
+  }, [pageData, editor, getPageContent, setContent, pages])
 
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={value => {
-      
+
       const isAstChange = editor.operations.some(
         op => 'set_selection' !== op.type
       )
       if (isAstChange) {
         const content = JSON.stringify(value)
-        if(content){
+        if (content) {
           setContent(content)
-        }   
+        }
       }
     }}>
       <Toolbar>
         <Flex justifyContent={'space-between'} marginBottom={'1.25rem'} onClick={handleButtonClick}>
-           <WriteWithAIButton/>
+          <WriteWithAIButton/>
           <StyleTextButton />
           <InsertImageButton />
         </Flex>
@@ -77,7 +80,7 @@ const EditorWithImages = () => {
       </Toolbar>
       <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' overflow={'auto'} >
         <Editable
-          style={{ minHeight: '268px' , overflowY:'auto', padding: '8px', overflowX:'clip'}}
+          style={{ minHeight: '268px', overflowY: 'auto', padding: '8px', overflowX: 'clip' }}
           editor={editor}
           onKeyDown={event => {
             if (isHotkey('mod+a', event)) {
@@ -117,7 +120,7 @@ export const withImages = editor => {
   editor.insertData = data => {
     const text = data.getData('text/plain')
     const { files } = data
-    if(!data){
+    if (!data) {
       return
     }
     if (files && files.length > 0) {
@@ -150,7 +153,7 @@ const insertImage = (editor, url) => {
   Transforms.insertNodes(editor, image)
   Transforms.insertNodes(editor, {
     type: 'paragraph',
-    children: [text ],
+    children: [text],
   })
 }
 
@@ -197,23 +200,23 @@ const Image = ({ attributes, children, element }) => {
   )
 }
 
-export const generateAIImage = async(mprompt)=>{
+export const generateAIImage = async (mprompt) => {
   let mres = ''
   const base_url = process.env.REACT_APP_BASE_URL
-  const prompt = mprompt 
+  const prompt = mprompt
   await axios()
-  .post(`${base_url}/pages/generateImage`, {
+    .post(`${base_url}/pages/generateImage`, {
       prompt: prompt,
     })
-      .then((res) => {
-      if (res.data && res.data.imageUrl){
-          mres = res.data.imageUrl
-      }        
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
-      return mres
+    .then((res) => {
+      if (res.data && res.data.imageUrl) {
+        mres = res.data.imageUrl
+      }
+    })
+    .catch((error) => {
+      alert(error.response.data.message);
+    });
+  return mres
 }
 
 const InsertImageButton = () => {
@@ -222,36 +225,36 @@ const InsertImageButton = () => {
     <MButton
       onMouseDown={async (event) => {
         event.preventDefault()
-        if(!editor.selection){
+        if (!editor.selection) {
           Transforms.select(editor, Editor.start(editor, []))
           Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
           return
         }
         const selectedText = Editor.string(editor, editor.selection);
-        if (!selectedText){
+        if (!selectedText) {
           Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
           return
         }
         const url = await generateAIImage(selectedText);
-      
+
         if (url && !isImageUrl(url)) {
           Transforms.insertText(editor, 'Kindly add a detailed prompt to generate an image')
           return
         }
         url && insertImage(editor, url)
       }}
-    >      
-          <>
-            <MIcon eltype='image'>image</MIcon>
-            <Text fontSize={'14px'}>Add Image</Text>
-          </>
+    >
+      <>
+        <MIcon eltype='image'>image</MIcon>
+        <Text fontSize={'14px'}>Add Image</Text>
+      </>
     </MButton>
   )
 }
 
 export const isImageUrl = url => {
   if (!url) return false
-  if (url.slice(0,4) === 'data'){
+  if (url.slice(0, 4) === 'data') {
     return true
   }
   if (!isUrl(url)) return false

@@ -52,10 +52,10 @@ function LoginPage() {
                 alert(error.message);
             });
         setTimeout(() => {
-            navigate("/");
             emailRef.current.value = "";
             passwordRef.current.value = "";
             setIsLoading(false);
+            navigate("/");
         }, 2000);
     };
     return (

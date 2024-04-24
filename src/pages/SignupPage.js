@@ -54,12 +54,12 @@ function SignupPage(){
           alert(error.message);
         });
       setTimeout(() => {
-        navigate("/");
         nameRef.current.value = "";
         passwordRef.current.value = "";
         emailRef.current.value = "";
         ageRef.current.value ='';
         setIsLoading(false);
+        navigate("/");
       }, 2000);
     };
     return (
