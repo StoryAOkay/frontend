@@ -10,7 +10,7 @@ function MyStoriesPage(){
     },[])
     return(
         
-        <Box minWidth='720px' >
+        <Box minWidth='720px' width='900px'>
             
             <BookThumbnail books={myBooks} canWrite={true} />
         </Box>

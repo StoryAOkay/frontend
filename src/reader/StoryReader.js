@@ -238,7 +238,6 @@ const StoryReader = () => {
         return { ...nto, z: 0, display: "none", immediate: true };
       });
 
-      console.log("finished-right");
       setPreviousWasFinished(true);
     };
 
@@ -279,7 +278,6 @@ const StoryReader = () => {
                    }
         return { ...nto, z: 0, display: "none", immediate: true };
       });
-      console.log("finished-left");
       setPreviousWasFinished(true);
     };
 
@@ -308,8 +306,6 @@ const StoryReader = () => {
     );
 
     let memoRotationParams = rotationParams;
-
-    //if (down) console.log(rotationParams);
 
     api.start(i => {
       let x1 = 0;
@@ -620,9 +616,6 @@ const StoryReader = () => {
             onRest: () => onRestFnRight(rotationParams.x)
           };
 
-          //if(down)
-          //          console.log("to",result);
-
           if (!down && needFinishTurn) {
             if (rotationParams.z1 === 1 || rotationParams.z0 === 1) {
               return {
@@ -701,7 +694,7 @@ const StoryReader = () => {
       onWheel:  onHoverHandler,
       onWheelCapture: onHoverHandler,
       onHover: onHoverHandler
-      //onMove: state => {console.log('move') },     // fires on mouse move over the element
+
     },
     {
       //enabled: previousWasFinished

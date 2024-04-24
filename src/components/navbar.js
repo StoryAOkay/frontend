@@ -4,10 +4,12 @@ import { NavLink } from "react-router-dom";
 import {Flex} from '@chakra-ui/react'
 import { useAuth } from "../contexts/AuthContext";
 import { useCurStory } from "../contexts/CurrentStoryContext";
+import useMediaQuery from "../hooks/useMediaQuery";
 
 export default function Navbar() {
   const [isLoading, setIsLoading] = React.useState(false);
   const {setCurStoryNull} = useCurStory()
+  const isSmallScreen = useMediaQuery();
   let auth = useAuth();
   const logout = () => {
     if (auth && auth.user && sessionStorage.hasOwnProperty("token")) {
@@ -18,7 +20,7 @@ export default function Navbar() {
       setIsLoading(false);
     }
   };
-  if ( !auth || !auth.user ){
+  if ( !auth || !auth.user || isSmallScreen){
     return(
       <span></span>
     )

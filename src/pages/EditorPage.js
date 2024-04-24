@@ -9,7 +9,7 @@ function EditorPickPage(){
     },[])
     return(
         
-        <Box minWidth='720px' >
+        <Box minWidth='720px' width='900px'>
             
             <BookThumbnail books={myBooks.slice(0, 1)} canWrite={false} />
         </Box>

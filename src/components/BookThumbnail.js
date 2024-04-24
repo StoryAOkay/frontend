@@ -14,14 +14,17 @@ export default function BookThumbnail({ books, canWrite }) {
         
     }
     return (
-        <Flex justifyContent={'space-around'} flexWrap={'wrap'}>
+        <Flex _after={{
+            content: '""',
+            flex: "auto",
+          }} justifyContent={'space-around'} flexWrap={'wrap'} >
 
             {books.map(
                 (book) => {      
                     return (
 
 
-                        <Popover key={book._id} maxW='180px' >
+                        <Popover key={book._id} maxW='220px' >
                             <PopoverTrigger>
                                 <Box border='1px solid black' borderRadius='30px' padding='1.25rem' width='240px' mb={'2rem'} marginRight={'2rem'}>
                                     <Image src={book.image} height='165px' borderRadius={'40px'} style={{'margin': 'auto'}}/>
