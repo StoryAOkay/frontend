@@ -39,12 +39,12 @@ export function CurStoryProvider({ children }) {
     }
     
   }
-  const getAllPages  = React.useCallback(async ()=>{
+  const getAllPages  = React.useCallback(async (bookId)=>{
     let  initialPages ;
     await axios()
-    .get(`${base_url}/stories/${bookInfo.id}/pages`)
+    .get(`${base_url}/stories/${bookId}/pages`)
     .then((res) => {
-      
+
         initialPages = res.data.reduce((acc, curr) => {
         acc[curr.pageNumber] = curr;
         return acc;
