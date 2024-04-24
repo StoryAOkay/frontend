@@ -1,6 +1,10 @@
 import React from "react";
 import axios from "../axios";
+import { createEditor } from 'slate'
+import { withReact } from 'slate-react'
+import { withHistory } from 'slate-history'
 import getHtmlContent from "../Helpers/CustomHtml";
+import { withImages } from "../Editor/ImageEditor";
 
 let CurStoryContext = React.createContext(null);
 
@@ -8,10 +12,16 @@ const base_url = process.env.REACT_APP_BASE_URL;
 
 export function CurStoryProvider({ children }) {
   let [bookInfo, setBookInfo] = React.useState(null);
-  let [pages, setPages] = React.useState({})
-  const setCurStoryNull = () => setBookInfo(null);
+  let [pages, setPages] = React.useState(null)
+  let [pageContent, setPageContent] = React.useState('')
+  let [content, setContent] = React.useState({})
+  const editor = React.useMemo(
+    () => withImages(withHistory(withReact(createEditor()))),
+    []
+  )
+   const setCurStoryNull = () => setBookInfo(null);
   const setCurBookInfo = (info) => {
-    if (Object.keys(info).length == 0) {
+    if ( info && Object.keys(info).length == 0) {
       setBookInfo(null);
       return;
     }
@@ -23,7 +33,13 @@ export function CurStoryProvider({ children }) {
       id: info.id
     })
   }
-  const getAllPages  = async ()=>{
+  const getPageContent =(pageNum)=>{
+    if(pages && Object.keys(pages).length > 0 && pageNum in pages){
+      setPageContent(pages[pageNum])
+    }
+    
+  }
+  const getAllPages  = React.useCallback(async ()=>{
     let  initialPages ;
     await axios()
     .get(`${base_url}/stories/${bookInfo.id}/pages`)
@@ -41,9 +57,9 @@ export function CurStoryProvider({ children }) {
       alert(error.response.data.message);
     });
 
-  }
+  }, [bookInfo])
   const getBookInfo = React.useCallback(async (book_id) => {
-    if (Object.keys(bookInfo).length > 0 && bookInfo.id == book_id) {
+    if (bookInfo && Object.keys(bookInfo).length > 0 && bookInfo.id == book_id) {
       return
     }
 
@@ -65,51 +81,57 @@ export function CurStoryProvider({ children }) {
       });
   }, [])
   const createPage = async (book_id) => {
-    const content = sessionStorage.getItem("content")
-    const jcontent = JSON.parse(content)
-    const html_content = getHtmlContent(jcontent)
+    const html_content = getHtmlContent(content, 1)
+    let pageN;
+    await axios()
+      .post(`${base_url}/stories/${book_id}/pages`, { content: content, html_content: html_content })
+      .then((res) => {
+        setPageContent({
+          id: res.data.id,
+          content: res.data.content,
+          html_content: res.data.html_content,
+          page_number: res.data.pageNumber
+        })
+            pageN = res.data.pageNumber
+        setPageContent({...pages, pageN: pageContent})
+      })
+      .catch((error) => {
 
-    // await axios()
-    //   .post(`${base_url}/stories/${book_id}/pages`, { content: content, html_content: html_content })
-    //   .then((res) => {
-    //     setPage({
-    //       ...res.data,
-    //       id: res.data.id,
-    //       content: res.data.content,
-    //       html_content: res.data.html_content,
-    //       page_number: res.data.pageNumber
-    //     })
-          //  pageNumber  = res.data.pageNumber
-    //     setPages({...pages, pageNumber: page})
-    //   })
-    //   .catch((error) => {
-
-    //     alert(error.response.data.message);
-    //   });
+        alert(error.response.data.message);
+      });
   }
   const updatePage = async () => {
-    const content = sessionStorage.getItem("content")
-    const jcontent = JSON.parse(content)
-    const html_content = getHtmlContent(jcontent)
-    // await axios()
-    //   .put(`${base_url}/pages/${page.id}`, { content: content, html_content: html_content })
-    //   .then((res) => {
-    //     setPage({
-    //       ...res.data,
-    //       id: res.data.id,
-    //       content: res.data.content,
-    //       html_content: res.data.html_content,
-    //       page_number: res.data.pageNumber
-    //     })
-    //     pageNumber = res.data.pageNumber
-    //     setPages({...pages, pageNumber: page})
-    //   })
-    //   .catch((error) => {
+    const html_content = getHtmlContent(content, pageContent.pageNumber)
+    let pageN;
 
-    //     alert(error.response.data.message);
-    //   });
+    await axios()
+      .put(`${base_url}/pages/${pageContent.id}`, {...pageContent, content: content, html_content: html_content })
+      .then((res) => {
+        setPageContent({
+          id: res.data.id,
+          content: res.data.content,
+          html_content: res.data.html_content,
+          page_number: res.data.pageNumber
+        })
+        pageN = res.data.pageNumber
+        setPages({...pages, pageN: pageContent})
+      })
+      .catch((error) => {
+
+        alert(error.response.data.message);
+      });
   }
+const finishStory = async()=>{
+ 
+  await axios()
+      .put(`${base_url}/pages/stories/${bookInfo.id}`, {isEnd: true })
+      .then((res) => {
+              })
+      .catch((error) => {
 
+        alert(error.response.data.message);
+      });
+}
   const value = React.useMemo(() => ({
     bookInfo,
     getBookInfo,
@@ -118,8 +140,17 @@ export function CurStoryProvider({ children }) {
     pages,
     createPage,
     updatePage,
-    getAllPages
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages]);
+    getAllPages,
+    pageContent,
+    setPageContent,
+    getPageContent,
+    editor,
+    content,
+    setContent,
+    finishStory,
+    setPages
+
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent, finishStory,setPages]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }

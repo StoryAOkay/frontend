@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import imageExtensions from 'image-extensions'
 import isUrl from 'is-url'
 import isHotkey from 'is-hotkey'
-import { Transforms, createEditor, Editor } from 'slate'
+import { Transforms, createEditor, Editor, Range } from 'slate'
 import {
   Slate,
   Editable,
@@ -18,27 +18,41 @@ import CustomEditor from '../Helpers/CustomEditor'
 import StyleTextButton from '../components/style_text_button'
 import WriteWithAIButton from '../components/write_with_ai_btn'
 import axios from "../axios";
-
+import { useCurStory } from '../contexts/CurrentStoryContext'
+import { useParams } from 'react-router-dom'
 
 const EditorWithImages = () => {
+ const {editor, pages, setContent, getPageContent} = useCurStory()
+ const pageData = useParams();
   const initialValue = useMemo(
     () =>
-      JSON.parse(sessionStorage.getItem('content')) || [
+       [
         {
           type: 'paragraph',
           children: [{ text: '' }],
         },
       ],
     []
-  )
-  const editor = useMemo(
-    () => withImages(withHistory(withReact(createEditor()))),
-    []
-  )
+  )  
   const renderLeaf = React.useCallback(props => {
     return <Leaf {...props} />
   }, [])
+  const handleButtonClick = React.useCallback(() => {
+    const { selection } = editor
+    if (selection === null) {
+      Transforms.select(editor, Editor.start(editor, []))
+    }
+  }, [editor])
 
+ React.useEffect(()=>{
+    if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
+      getPageContent(pageData.pageNumber)
+      setContent(pages[pageData.pageNumber].content)
+      const newValue = JSON.parse(pages[pageData.pageNumber].content)
+       editor.children = newValue
+    }
+
+ }, [pageData, editor, getPageContent, setContent, pages])
 
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={value => {
@@ -49,20 +63,21 @@ const EditorWithImages = () => {
       if (isAstChange) {
         const content = JSON.stringify(value)
         if(content){
-          sessionStorage.setItem('content', content)
+          setContent(content)
         }   
       }
     }}>
       <Toolbar>
-        <Flex justifyContent={'space-between'} marginBottom={'1.25rem'}>
+        <Flex justifyContent={'space-between'} marginBottom={'1.25rem'} onClick={handleButtonClick}>
            <WriteWithAIButton/>
           <StyleTextButton />
           <InsertImageButton />
         </Flex>
 
       </Toolbar>
-      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' >
+      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' overflow={'auto'} >
         <Editable
+          style={{ minHeight: '268px' , overflowY:'auto', padding: '8px', overflowX:'clip'}}
           editor={editor}
           onKeyDown={event => {
             if (isHotkey('mod+a', event)) {
@@ -92,7 +107,7 @@ const EditorWithImages = () => {
   )
 }
 
-const withImages = editor => {
+export const withImages = editor => {
   const { insertData, isVoid } = editor
 
   editor.isVoid = element => {
@@ -102,7 +117,9 @@ const withImages = editor => {
   editor.insertData = data => {
     const text = data.getData('text/plain')
     const { files } = data
-
+    if(!data){
+      return
+    }
     if (files && files.length > 0) {
       for (const file of files) {
         const reader = new FileReader()
@@ -205,14 +222,20 @@ const InsertImageButton = () => {
     <MButton
       onMouseDown={async (event) => {
         event.preventDefault()
+        if(!editor.selection){
+          Transforms.select(editor, Editor.start(editor, []))
+          Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
+          return
+        }
         const selectedText = Editor.string(editor, editor.selection);
         if (!selectedText){
+          Transforms.insertText(editor, 'Kindly add a prompt to generate a image')
           return
         }
         const url = await generateAIImage(selectedText);
       
         if (url && !isImageUrl(url)) {
-          alert('URL is not an image')
+          Transforms.insertText(editor, 'Kindly add a detailed prompt to generate an image')
           return
         }
         url && insertImage(editor, url)

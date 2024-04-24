@@ -19,7 +19,7 @@ function StoryPage(){
     },[bookInfo, getAllPages])
     return (
         <Box width='658px' >
-           { Object.keys(pageData).length === 0  || pageData.pageNumber === '0'? <StoryForm />  :  <Outlet /> }
+           { pageData && Object.keys(pageData).length === 0  || pageData.pageNumber === '0'? <StoryForm />  :  <Outlet /> }
         </Box>
         
     )

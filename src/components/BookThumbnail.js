@@ -5,23 +5,30 @@ import { useCurStory } from "../contexts/CurrentStoryContext";
 import { useNavigate , useParams} from 'react-router-dom';
 
 export default function BookThumbnail({ books, canWrite }) {
-    const {setCurBookInfo} = useCurStory()
+    const {setCurStoryNull, setCurBookInfo,setPages} = useCurStory()
+    
     const navigate = useNavigate()
     const editBook = (event,book)=>{
         event.preventDefault()
+        console.log(book)
+        setCurStoryNull();
+        setPages(null)
         setCurBookInfo(book)
         navigate(`/write`)
         
     }
     return (
-        <Flex justifyContent={'space-around'} flexWrap={'wrap'}>
+        <Flex _after={{
+            content: '""',
+            flex: "auto",
+          }} justifyContent={'space-around'} flexWrap={'wrap'} >
 
             {books.map(
                 (book) => {      
                     return (
 
 
-                        <Popover key={book._id} maxW='180px' >
+                        <Popover key={book._id} maxW='220px' >
                             <PopoverTrigger>
                                 <Box border='1px solid black' borderRadius='30px' padding='1.25rem' width='240px' mb={'2rem'} marginRight={'2rem'}>
                                     <Image src={book.image} height='165px' borderRadius={'40px'} style={{'margin': 'auto'}}/>

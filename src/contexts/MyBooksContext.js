@@ -9,7 +9,7 @@ const base_url = process.env.REACT_APP_BASE_URL;
 export function MyBooksProvider({ children }) {
   let [myBooks, setBooks] = React.useState([]);
   const setMyBooks = (book) => {
-    if (Object.keys(book).length == 0) {
+    if (book && Object.keys(book).length == 0) {
       setBooks(null);
       return;
     }
