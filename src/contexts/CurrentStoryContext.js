@@ -147,9 +147,10 @@ const finishStory = async()=>{
     editor,
     content,
     setContent,
-    finishStory
+    finishStory,
+    setPages
 
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent, finishStory]);
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent, finishStory,setPages]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }

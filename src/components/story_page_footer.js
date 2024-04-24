@@ -97,7 +97,7 @@ function StoryPageFooter() {
                 </AlertDialog>
             </Flex>
             <Flex justifyContent={'space-around'}>
-                <Button fontSize={'1rem'} color={'black'} variant={'outline'} onclick={finishStory}>End Story</Button>
+                <Button fontSize={'1rem'} color={'black'} variant={'outline'} onClick={finishStory}>End Story</Button>
             </Flex>
 
         </Box>

@@ -5,10 +5,14 @@ import { useCurStory } from "../contexts/CurrentStoryContext";
 import { useNavigate , useParams} from 'react-router-dom';
 
 export default function BookThumbnail({ books, canWrite }) {
-    const {setCurBookInfo} = useCurStory()
+    const {setCurStoryNull, setCurBookInfo,setPages} = useCurStory()
+    
     const navigate = useNavigate()
     const editBook = (event,book)=>{
         event.preventDefault()
+        console.log(book)
+        setCurStoryNull();
+        setPages(null)
         setCurBookInfo(book)
         navigate(`/write`)
         
