@@ -45,7 +45,7 @@ const EditorWithImages = () => {
   }, [editor])
  React.useEffect(()=>{
     //if
-  console.log(editor, editor.selection)
+  // console.log(editor, editor.selection)
  }, [editor, editor.selection])
 
   return (
@@ -69,8 +69,9 @@ const EditorWithImages = () => {
         </Flex>
 
       </Toolbar>
-      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' >
+      <Box mt='2rem' padding={'1.5rem'} border='2px solid black' borderRadius='20px' maxHeight={'440px'} height='320px' overflow={'auto'} >
         <Editable
+          style={{ minHeight: '268px' , overflowY:'auto', padding: '8px', overflowX:'clip'}}
           editor={editor}
           onKeyDown={event => {
             if (isHotkey('mod+a', event)) {
