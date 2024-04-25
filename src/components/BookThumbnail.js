@@ -3,9 +3,10 @@ import { Flex, Box, Image, Text, Popover, PopoverHeader, PopoverBody, PopoverTri
 import BlackButton from "./black_button";
 import { useCurStory } from "../contexts/CurrentStoryContext";
 import { useNavigate} from 'react-router-dom';
+import { prepareHtml } from "../Helpers/Reader";
 
 export default function BookThumbnail({ books, canWrite }) {
-    const { setCurStoryNull, setCurBookInfo,getAllPages, setContent, editor, bookInfo } = useCurStory()
+    const { setHtml, setHtmlPages, setCurStoryNull, setCurBookInfo,getAllPages, setContent, editor, bookInfo } = useCurStory()
 
     const navigate = useNavigate()
     const editBook = (event, book) => {
@@ -22,6 +23,13 @@ export default function BookThumbnail({ books, canWrite }) {
         navigate(`/write`, { bookId: book.id })
 
     }
+    const handleNavigateToRead = async (event, book) => {
+       event.preventDefault()
+        const res = await prepareHtml(book.id)
+        setHtml(res[0])
+        setHtmlPages(res[1])
+        navigate(`/read`);
+      };
     return (
         <Flex _after={{
             content: '""',
@@ -65,7 +73,9 @@ export default function BookThumbnail({ books, canWrite }) {
                                         width="100%"
                                         fontWeight={'normal'}
                                         fontSize="20px"
-                                        onClick={()=> navigate('/read')}
+                                        // onClick={()=>handleNavigateToRead}
+                                        onClick={(e)=> handleNavigateToRead(e, book)}
+
                                     >
                                         Read
                                     </BlackButton>

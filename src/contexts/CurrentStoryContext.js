@@ -11,6 +11,8 @@ let CurStoryContext = React.createContext(null);
 const base_url = process.env.REACT_APP_BASE_URL;
 
 export function CurStoryProvider({ children }) {
+  let [mhtml, setHtml] = React.useState({})
+  let [htmlPages, setHtmlPages] = React.useState([])
   let [bookInfo, setBookInfo] = React.useState(null);
   let [pages, setPages] = React.useState(null)
   let [pageContent, setPageContent] = React.useState('')
@@ -19,9 +21,9 @@ export function CurStoryProvider({ children }) {
     () => withImages(withHistory(withReact(createEditor()))),
     []
   )
-   const setCurStoryNull = () => setBookInfo(null);
+  const setCurStoryNull = () => setBookInfo(null);
   const setCurBookInfo = (info) => {
-    if ( info && Object.keys(info).length == 0) {
+    if (info && Object.keys(info).length == 0) {
       setBookInfo(null);
       return;
     }
@@ -33,29 +35,29 @@ export function CurStoryProvider({ children }) {
       id: info.id
     })
   }
-  const getPageContent =(pageNum)=>{
-    if(pages && Object.keys(pages).length > 0 && pageNum in pages){
+  const getPageContent = (pageNum) => {
+    if (pages && Object.keys(pages).length > 0 && pageNum in pages) {
       setPageContent(pages[pageNum])
     }
-    
+
   }
-  const getAllPages  = React.useCallback(async (bookId)=>{
-    let  initialPages ;
+  const getAllPages = React.useCallback(async (bookId) => {
+    let initialPages;
     await axios()
-    .get(`${base_url}/stories/${bookId}/pages`)
-    .then((res) => {
+      .get(`${base_url}/stories/${bookId}/pages`)
+      .then((res) => {
 
         initialPages = res.data.reduce((acc, curr) => {
-        acc[curr.pageNumber] = curr;
-        return acc;
-        
-      }, {});
-      setPages(initialPages);  
+          acc[curr.pageNumber] = curr;
+          return acc;
+
+        }, {});
+        setPages(initialPages);
 
       })
-    .catch((error) => {
-      alert(error.response.data.message);
-    });
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
 
   }, [bookInfo])
   const getBookInfo = React.useCallback(async (book_id) => {
@@ -92,8 +94,8 @@ export function CurStoryProvider({ children }) {
           html_content: res.data.html_content,
           page_number: res.data.pageNumber
         })
-            pageN = res.data.pageNumber
-        setPageContent({...pages, pageN: pageContent})
+        pageN = res.data.pageNumber
+        setPageContent({ ...pages, pageN: pageContent })
       })
       .catch((error) => {
 
@@ -105,7 +107,7 @@ export function CurStoryProvider({ children }) {
     let pageN;
 
     await axios()
-      .put(`${base_url}/pages/${pageContent.id}`, {...pageContent, content: content, html_content: html_content })
+      .put(`${base_url}/pages/${pageContent.id}`, { ...pageContent, content: content, html_content: html_content })
       .then((res) => {
         setPageContent({
           id: res.data.id,
@@ -114,24 +116,24 @@ export function CurStoryProvider({ children }) {
           page_number: res.data.pageNumber
         })
         pageN = res.data.pageNumber
-        setPages({...pages, pageN: pageContent})
+        setPages({ ...pages, pageN: pageContent })
       })
       .catch((error) => {
 
         alert(error.response.data.message);
       });
   }
-const finishStory = async()=>{
- 
-  await axios()
-      .put(`${base_url}/pages/stories/${bookInfo.id}`, {isEnd: true })
+  const finishStory = async () => {
+
+    await axios()
+      .put(`${base_url}/pages/stories/${bookInfo.id}`, { isEnd: true })
       .then((res) => {
-              })
+      })
       .catch((error) => {
 
         alert(error.response.data.message);
       });
-}
+  }
   const value = React.useMemo(() => ({
     bookInfo,
     getBookInfo,
@@ -148,9 +150,16 @@ const finishStory = async()=>{
     content,
     setContent,
     finishStory,
-    setPages
+    setPages,
+    htmlPages,
+    mhtml,
+    setHtml,
+    setHtmlPages
 
-  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor,content, setContent, finishStory,setPages]);
+  }), [bookInfo, getBookInfo, setCurBookInfo, setCurStoryNull, pages, createPage, updatePage, getAllPages, setPageContent, pageContent, getPageContent, editor, content, setContent, finishStory, setPages, htmlPages,
+    mhtml,
+    setHtml,
+    setHtmlPages]);
 
   return <CurStoryContext.Provider value={value}>{children}</CurStoryContext.Provider>;
 }

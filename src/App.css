@@ -164,3 +164,15 @@ img {
   padding-bottom: 12px;
 }
 
+/* img:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  background-image: url(https://scontent.fdet2-1.fna.fbcdn.net/v/t39.30808-6/440341207_316015001587635_4660568701080960518_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=8twxxTIIXKcAb7lzXNA&_nc_ht=scontent.fdet2-1.fna&oh=00_AfCmG4qVo6ez2f_KFMKK8_L_k5ZMc4E_m_vA15ZyKCAvaA&oe=662F90F0); 
+  background-color: #edafb8;
+  max-height: 320px;
+   margin: 20px auto; 
+  height : 165px;
+  width: 198px;
+  border-radius: 40px;
+} */
