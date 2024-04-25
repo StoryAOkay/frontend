@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex, Button, Box, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay } from '@chakra-ui/react'
+import {Flex, Button, Box, useDisclosure, AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay } from '@chakra-ui/react'
 import BlackButton from "./black_button";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom'
@@ -14,53 +14,37 @@ function StoryPageFooter() {
 
 
     const goToNextPage = async () => {
-        if ( !content || content == '' ) {
+        if ( !content || content === '' ) {
             onOpen()
 
         } else  if(pages&&Object.keys(pages).length > 0 && pageData.pageNumber in pages){
             await updatePage(bookInfo.id)
             setPageContent({})
             if (editor.children) {
-                editor.children =  [
-                    {
-                      type: 'paragraph',
-                      children: [{ text: '' }],
-                    },
-                  ]
+                editor.children =  [ ]
             }
             navigate(`/write/page/${parseInt(pageData.pageNumber) + 1}`, { pageNumber: parseInt(pageData.pageNumber) + 1 })
           }else {
             await createPage(bookInfo.id)
             setContent('')
             if (editor.children) {
-                editor.children =  [
-                    {
-                      type: 'paragraph',
-                      children: [{ text: '' }],
-                    },
-                  ]
+                editor.children =  []
             }
             navigate(`/write/page/${parseInt(pageData.pageNumber) + 1}`, { pageNumber: parseInt(pageData.pageNumber) + 1 })
         }
     }
     const goToPrevPage = async () => {
 
-        if ( content && content!='') {
+        if ( content && content!=='') {
             await updatePage(bookInfo.id)
             setContent('')
         if (editor.children) {
-
-            editor.children =  [
-                {
-                  type: 'paragraph',
-                  children: [{ text: '' }],
-                },
-              ]
+            editor.children =  [ ]
         }
 
         }
         
-        pageData.pageNumber == '1' ? navigate('/write') : navigate(`/write/page/${parseInt(pageData.pageNumber) - 1}`, { pageNumber: parseInt(pageData.pageNumber) - 1 })
+        pageData.pageNumber === '1' ? navigate('/write') : navigate(`/write/page/${parseInt(pageData.pageNumber) - 1}`, { pageNumber: parseInt(pageData.pageNumber) - 1 })
 
 
     }

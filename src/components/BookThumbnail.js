@@ -1,37 +1,50 @@
-import React, { useState } from "react";
-import { Flex, Box, Image, Text, HStack, Popover, PopoverHeader, PopoverBody, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverFooter, ButtonGroup, Button, FocusLock, useDisclosure } from '@chakra-ui/react';
+import React from "react";
+import { Flex, Box, Image, Text, Popover, PopoverHeader, PopoverBody, PopoverTrigger, PopoverArrow, PopoverCloseButton, PopoverContent, PopoverFooter, ButtonGroup, Button, FocusLock, useDisclosure } from '@chakra-ui/react';
 import BlackButton from "./black_button";
 import { useCurStory } from "../contexts/CurrentStoryContext";
-import { useNavigate , useParams} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { prepareHtml } from "../Helpers/Reader";
 
 export default function BookThumbnail({ books, canWrite }) {
-    const {setCurStoryNull, setCurBookInfo,setPages} = useCurStory()
-    
+    const { setHtml, setHtmlPages, setCurStoryNull, setCurBookInfo,getAllPages, setContent, editor, bookInfo } = useCurStory()
+
     const navigate = useNavigate()
-    const editBook = (event,book)=>{
-        event.preventDefault()
-        console.log(book)
-        setCurStoryNull();
-        setPages(null)
-        setCurBookInfo(book)
-        navigate(`/write`)
-        
+    const editBook = (event, book) => {
+        if (bookInfo == null || (bookInfo && book && book.id != bookInfo.id)) {
+            event.preventDefault()
+            setCurStoryNull();
+            getAllPages(book.id)
+            setContent('')
+            if (editor.children) {
+                editor.children = []
+            }
+            setCurBookInfo(book)
+        }
+        navigate(`/write`, { bookId: book.id })
+
     }
+    const handleNavigateToRead = async (event, book) => {
+       event.preventDefault()
+        const res = await prepareHtml(book.id)
+        setHtml(res[0])
+        setHtmlPages(res[1])
+        navigate(`/read`);
+      };
     return (
         <Flex _after={{
             content: '""',
             flex: "auto",
-          }} justifyContent={'space-around'} flexWrap={'wrap'} >
+        }} justifyContent={'space-around'} flexWrap={'wrap'} >
 
             {books.map(
-                (book) => {      
+                (book) => {
                     return (
 
 
                         <Popover key={book._id} maxW='220px' >
                             <PopoverTrigger>
                                 <Box border='1px solid black' borderRadius='30px' padding='1.25rem' width='240px' mb={'2rem'} marginRight={'2rem'}>
-                                    <Image src={book.image} height='165px' borderRadius={'40px'} style={{'margin': 'auto'}}/>
+                                    <Image src={book.image} height='165px' borderRadius={'40px'} style={{ 'margin': 'auto' }} />
                                     <Text fontWeight={600} textTransform={'uppercase'} mt='0.5rem'>{book.title}</Text>
                                 </Box>
                             </PopoverTrigger>
@@ -49,7 +62,7 @@ export default function BookThumbnail({ books, canWrite }) {
                                 <PopoverFooter
                                     border='0'
                                     display='flex'
-                                    
+
                                     flexDirection={'column'}
                                     pb={4}
                                 >
@@ -60,15 +73,17 @@ export default function BookThumbnail({ books, canWrite }) {
                                         width="100%"
                                         fontWeight={'normal'}
                                         fontSize="20px"
-                                        onClick={()=> navigate('/read')}
+                                        // onClick={()=>handleNavigateToRead}
+                                        onClick={(e)=> handleNavigateToRead(e, book)}
+
                                     >
                                         Read
                                     </BlackButton>
 
-                                    { canWrite &&
-                                    <Button width='100%' onClick={(event)=>editBook(event, book) }>
-                                        Edit
-                                    </Button>}
+                                    {canWrite &&
+                                        <Button width='100%' onClick={(event) => editBook(event, book)}>
+                                            Edit
+                                        </Button>}
 
                                 </PopoverFooter>
                             </PopoverContent>

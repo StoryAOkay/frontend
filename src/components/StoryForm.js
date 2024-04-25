@@ -94,7 +94,7 @@ export default function StoryForm(){
         }
       
 
-    },[params])
+    },[params, bookInfo])
     return (<Box>
         
 
