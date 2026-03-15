@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# StoryNasi
+For a deep dive, read [https://github.com/StoryAOkay/frontend/blob/main/AnnetteProject.pdf]
 
 ## Available Scripts
 
