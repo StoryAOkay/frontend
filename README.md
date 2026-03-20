@@ -511,19 +511,6 @@ The original design called for a custom Unity WebGL editor to allow freeform tex
 
 ---
 
-## Deployment
-
-Both frontend and backend were successfully deployed on **[Render.com](https://render.com/)** on **April 23, 2024**.
-
-| Service | URL |
-|---|---|
-| **Frontend** | https://frontend-1-uip9.onrender.com/login |
-| **Backend API** | https://backendohox.onrender.com/api/ |
-
-The frontend is deployed as a **Static Site** and the backend as a **Web Service**. Both are independently scalable and auto-deploy on push to the main branch.
-
----
-
 ## Future Work
 
 | Enhancement | Description |
