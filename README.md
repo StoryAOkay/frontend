@@ -4,8 +4,6 @@
 
 ### AI-Powered Story Creation & Publishing Platform
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Frontend-9B59B6?style=for-the-badge&logo=render)](https://frontend-1-uip9.onrender.com/login)
-[![API](https://img.shields.io/badge/Live%20Demo-Backend%20API-27AE60?style=for-the-badge&logo=render)](https://backendohox.onrender.com/api/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
