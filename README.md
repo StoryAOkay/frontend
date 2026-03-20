@@ -33,7 +33,6 @@
 - [Getting Started](#getting-started)
 - [Agile Development Process](#agile-development-process)
 - [Design & UX](#design--ux)
-- [Deployment](#deployment)
 - [Future Work](#future-work)
 - [Credits & References](#credits--references)
 
